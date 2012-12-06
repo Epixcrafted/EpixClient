@@ -1963,15 +1963,7 @@ public abstract class World implements IBlockAccess
                 {
                     var4 = CrashReport.makeCrashReport(var7, "Ticking entity");
                     var5 = var4.makeCategory("Entity being ticked");
-
-                    if (var2 == null)
-                    {
-                        var5.addCrashSection("Entity", "~~NULL~~");
-                    }
-                    else
-                    {
-                        var2.func_85029_a(var5);
-                    }
+                    var2.func_85029_a(var5);
 
                     throw new ReportedException(var4);
                 }
@@ -2015,15 +2007,7 @@ public abstract class World implements IBlockAccess
                 {
                     var4 = CrashReport.makeCrashReport(var6, "Ticking tile entity");
                     var5 = var4.makeCategory("Tile entity being ticked");
-
-                    if (var9 == null)
-                    {
-                        var5.addCrashSection("Tile entity", "~~NULL~~");
-                    }
-                    else
-                    {
-                        var9.func_85027_a(var5);
-                    }
+                    var9.func_85027_a(var5);
 
                     throw new ReportedException(var4);
                 }

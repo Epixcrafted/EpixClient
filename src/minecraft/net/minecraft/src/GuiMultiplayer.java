@@ -196,7 +196,7 @@ public class GuiMultiplayer extends GuiScreen
             }
             else if (par1GuiButton.id == 0)
             {
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.shutdown();
             }
             else if (par1GuiButton.id == 8)
             {

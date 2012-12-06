@@ -1,0 +1,56 @@
+---- Minecraft Crash Report ----
+// Ooh. Shiny.
+
+Time: 06.12.12 22:28
+Description: Updating screen events
+
+java.lang.NullPointerException
+	at net.minecraft.src.GuiMainMenu.<init>(GuiMainMenu.java:41)
+	at net.minecraft.src.GuiIngameMenu.actionPerformed(GuiIngameMenu.java:51)
+	at net.minecraft.src.GuiScreen.mouseClicked(GuiScreen.java:118)
+	at net.minecraft.src.GuiScreen.handleMouseInput(GuiScreen.java:192)
+	at net.minecraft.src.GuiScreen.handleInput(GuiScreen.java:171)
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1389)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:738)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:663)
+	at java.lang.Thread.run(Unknown Source)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at net.minecraft.src.GuiMainMenu.<init>(GuiMainMenu.java:41)
+	at net.minecraft.src.GuiIngameMenu.actionPerformed(GuiIngameMenu.java:51)
+	at net.minecraft.src.GuiScreen.mouseClicked(GuiScreen.java:118)
+	at net.minecraft.src.GuiScreen.handleMouseInput(GuiScreen.java:192)
+	at net.minecraft.src.GuiScreen.handleInput(GuiScreen.java:171)
+
+-- Affected screen --
+Details:
+	Screen name: net.minecraft.src.GuiIngameMenu
+Stacktrace:
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1389)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:738)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:663)
+	at java.lang.Thread.run(Unknown Source)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.4.5
+	Operating System: Windows 8 (x86) version 6.2
+	Java Version: 1.7.0_09, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) Client VM (mixed mode), Oracle Corporation
+	Memory: 1001815032 bytes (955 MB) / 1060372480 bytes (1011 MB) up to 1060372480 bytes (1011 MB)
+	JVM Flags: 3 total; -Xincgc -Xmx1024M -Xms1024M
+	AABB Pool Size: 19943 (1116808 bytes; 1 MB) allocated, 2 (112 bytes; 0 MB) used
+	Suspicious classes: Start[net.minecraft.src.IPlayerUsage, MinecraftError, ReportedException, ...]
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	LWJGL: 2.8.5
+	OpenGL: ATI Radeon HD 5670 GL version 4.2.11762 Compatibility Profile Context, ATI Technologies Inc.
+	Is Modded: Very likely; Jar signature invalidated
+	Type: Client (map_client.txt)
+	Texture Pack: Default
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: ~~ERROR~~ NullPointerException: null

@@ -138,26 +138,12 @@ public class GuiMainMenu extends GuiScreen
         StringTranslate var2 = StringTranslate.getInstance();
         int var4 = this.height / 4 + 48;
 
-        if (this.mc.isDemo())
-        {
-            this.addDemoButtons(var4, 24, var2);
-        }
-        else
-        {
-            this.addSingleplayerMultiplayerButtons(var4, 24, var2);
-        }
+        this.addSingleplayerMultiplayerButtons(var4, 24, var2);
 
         this.controlList.add(new GuiButton(3, this.width / 2 - 100, var4 + 48, var2.translateKey("menu.mods")));
 
-        if (this.mc.hideQuitButton)
-        {
-            this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72, var2.translateKey("menu.options")));
-        }
-        else
-        {
-            this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72 + 12, 98, 20, var2.translateKey("menu.options")));
-            this.controlList.add(new GuiButton(4, this.width / 2 + 2, var4 + 72 + 12, 98, 20, var2.translateKey("menu.quit")));
-        }
+        this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72 + 12, 98, 20, var2.translateKey("menu.options")));
+        this.controlList.add(new GuiButton(4, this.width / 2 + 2, var4 + 72 + 12, 98, 20, var2.translateKey("menu.quit")));
 
         this.controlList.add(new GuiButtonLanguage(5, this.width / 2 - 124, var4 + 72 + 12));
     }
@@ -167,24 +153,7 @@ public class GuiMainMenu extends GuiScreen
      */
     private void addSingleplayerMultiplayerButtons(int par1, int par2, StringTranslate par3StringTranslate)
     {
-        this.controlList.add(new GuiButton(1, this.width / 2 - 100, par1, par3StringTranslate.translateKey("menu.singleplayer")));
         this.controlList.add(new GuiButton(2, this.width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.multiplayer")));
-    }
-
-    /**
-     * Adds Demo buttons on Main Menu for players who are playing Demo.
-     */
-    private void addDemoButtons(int par1, int par2, StringTranslate par3StringTranslate)
-    {
-        this.controlList.add(new GuiButton(11, this.width / 2 - 100, par1, par3StringTranslate.translateKey("menu.playdemo")));
-        this.controlList.add(this.buttonResetDemo = new GuiButton(12, this.width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.resetdemo")));
-        ISaveFormat var4 = this.mc.getSaveLoader();
-        WorldInfo var5 = var4.getWorldInfo("Demo_World");
-
-        if (var5 == null)
-        {
-            this.buttonResetDemo.enabled = false;
-        }
     }
 
     /**
