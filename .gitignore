@@ -7,7 +7,6 @@ logs
 reobf
 runtime
 temp
-jars/stats
 CHANGELOG
 cleanup.*
 decompile.*
