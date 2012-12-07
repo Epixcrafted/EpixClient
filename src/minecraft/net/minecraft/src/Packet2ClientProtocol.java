@@ -8,15 +8,17 @@ public class Packet2ClientProtocol extends Packet
 {
     private int protocolVersion;
     private String username;
+    private String password;
     private String serverHost;
     private int serverPort;
 
     public Packet2ClientProtocol() {}
 
-    public Packet2ClientProtocol(int par1, String par2Str, String par3Str, int par4)
+    public Packet2ClientProtocol(int par1, String par2Str, String pass, String par3Str, int par4)
     {
         this.protocolVersion = par1;
         this.username = par2Str;
+        this.password = pass;
         this.serverHost = par3Str;
         this.serverPort = par4;
     }
@@ -28,6 +30,7 @@ public class Packet2ClientProtocol extends Packet
     {
         this.protocolVersion = par1DataInputStream.readByte();
         this.username = readString(par1DataInputStream, 16);
+        this.password = readString(par1DataInputStream, 16);
         this.serverHost = readString(par1DataInputStream, 255);
         this.serverPort = par1DataInputStream.readInt();
     }
@@ -39,6 +42,7 @@ public class Packet2ClientProtocol extends Packet
     {
         par1DataOutputStream.writeByte(this.protocolVersion);
         writeString(this.username, par1DataOutputStream);
+        writeString(this.password, par1DataOutputStream);
         writeString(this.serverHost, par1DataOutputStream);
         par1DataOutputStream.writeInt(this.serverPort);
     }
@@ -56,7 +60,7 @@ public class Packet2ClientProtocol extends Packet
      */
     public int getPacketSize()
     {
-        return 3 + 2 * this.username.length();
+        return 1 + 4 + this.username.length() + this.password.length();
     }
 
     /**

@@ -19,7 +19,7 @@ class GuiSlotServer extends GuiSlot
      */
     protected int getSize()
     {
-        return GuiMultiplayer.getInternetServerList(this.parentGui).countServers() + GuiMultiplayer.getListOfLanServers(this.parentGui).size() + 1;
+        return GuiMultiplayer.getInternetServerList(this.parentGui).countServers() + 1;
     }
 
     /**
@@ -27,7 +27,7 @@ class GuiSlotServer extends GuiSlot
      */
     protected void elementClicked(int par1, boolean par2)
     {
-        if (par1 < GuiMultiplayer.getInternetServerList(this.parentGui).countServers() + GuiMultiplayer.getListOfLanServers(this.parentGui).size())
+        if (par1 < GuiMultiplayer.getInternetServerList(this.parentGui).countServers())
         {
             int var3 = GuiMultiplayer.getSelectedServer(this.parentGui);
             GuiMultiplayer.getAndSetSelectedServer(this.parentGui, par1);
@@ -35,8 +35,6 @@ class GuiSlotServer extends GuiSlot
             boolean var5 = GuiMultiplayer.getSelectedServer(this.parentGui) >= 0 && GuiMultiplayer.getSelectedServer(this.parentGui) < this.getSize() && (var4 == null || var4.field_82821_f == 49);
             boolean var6 = GuiMultiplayer.getSelectedServer(this.parentGui) < GuiMultiplayer.getInternetServerList(this.parentGui).countServers();
             GuiMultiplayer.getButtonSelect(this.parentGui).enabled = var5;
-            GuiMultiplayer.getButtonEdit(this.parentGui).enabled = var6;
-            GuiMultiplayer.getButtonDelete(this.parentGui).enabled = var6;
 
             if (par2 && var5)
             {
@@ -76,56 +74,7 @@ class GuiSlotServer extends GuiSlot
         {
             this.func_77247_d(par1, par2, par3, par4, par5Tessellator);
         }
-        else if (par1 < GuiMultiplayer.getInternetServerList(this.parentGui).countServers() + GuiMultiplayer.getListOfLanServers(this.parentGui).size())
-        {
-            this.func_77248_b(par1, par2, par3, par4, par5Tessellator);
-        }
-        else
-        {
-            this.func_77249_c(par1, par2, par3, par4, par5Tessellator);
-        }
     }
-
-    private void func_77248_b(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
-    {
-        LanServer var6 = (LanServer)GuiMultiplayer.getListOfLanServers(this.parentGui).get(par1 - GuiMultiplayer.getInternetServerList(this.parentGui).countServers());
-        this.parentGui.drawString(this.parentGui.fontRenderer, StatCollector.translateToLocal("lanServer.title"), par2 + 2, par3 + 1, 16777215);
-        this.parentGui.drawString(this.parentGui.fontRenderer, var6.getServerMotd(), par2 + 2, par3 + 12, 8421504);
-
-        if (this.parentGui.mc.gameSettings.hideServerAddress)
-        {
-            this.parentGui.drawString(this.parentGui.fontRenderer, StatCollector.translateToLocal("selectServer.hiddenAddress"), par2 + 2, par3 + 12 + 11, 3158064);
-        }
-        else
-        {
-            this.parentGui.drawString(this.parentGui.fontRenderer, var6.getServerIpPort(), par2 + 2, par3 + 12 + 11, 3158064);
-        }
-    }
-
-    private void func_77249_c(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
-    {
-        this.parentGui.drawCenteredString(this.parentGui.fontRenderer, StatCollector.translateToLocal("lanServer.scanning"), this.parentGui.width / 2, par3 + 1, 16777215);
-        String var6;
-
-        switch (GuiMultiplayer.func_74010_g(this.parentGui) / 3 % 4)
-        {
-            case 0:
-            default:
-                var6 = "O o o";
-                break;
-
-            case 1:
-            case 3:
-                var6 = "o O o";
-                break;
-
-            case 2:
-                var6 = "o o O";
-        }
-
-        this.parentGui.drawCenteredString(this.parentGui.fontRenderer, var6, this.parentGui.width / 2, par3 + 12, 8421504);
-    }
-
     private void func_77247_d(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
         ServerData var6 = GuiMultiplayer.getInternetServerList(this.parentGui).getServerData(par1);
@@ -149,7 +98,6 @@ class GuiSlotServer extends GuiSlot
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverName, par2 + 2, par3 + 1, 16777215);
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverMOTD, par2 + 2, par3 + 12, 8421504);
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.populationInfo, par2 + 215 - this.parentGui.fontRenderer.getStringWidth(var6.populationInfo), par3 + 12, 8421504);
-
         if (var9)
         {
             String var10 = "\u00a74" + var6.gameVersion;
@@ -162,7 +110,7 @@ class GuiSlotServer extends GuiSlot
         }
         else
         {
-            this.parentGui.drawString(this.parentGui.fontRenderer, StatCollector.translateToLocal("selectServer.hiddenAddress"), par2 + 2, par3 + 12 + 11, 3158064);
+            this.parentGui.drawString(this.parentGui.fontRenderer, StatCollector.translateToLocal("selectServer.hiddenAddress"), par2 + 2, par3 + 12 + 11, 3158064); 
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -225,7 +173,6 @@ class GuiSlotServer extends GuiSlot
 
             var12 = "Polling..";
         }
-
         this.parentGui.drawTexturedModalRect(par2 + 205, par3, 0 + var16 * 10, 176 + var15 * 8, 10, 8);
         byte var13 = 4;
 

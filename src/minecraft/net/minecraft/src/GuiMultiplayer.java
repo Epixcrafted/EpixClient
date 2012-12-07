@@ -28,38 +28,17 @@ public class GuiMultiplayer extends GuiScreen
 
     /** Index of the currently selected server */
     private int selectedServer = -1;
-
-    /** The 'Edit' button */
-    private GuiButton buttonEdit;
-
+    
     /** The 'Join Server' button */
     private GuiButton buttonSelect;
-
-    /** The 'Delete' button */
-    private GuiButton buttonDelete;
-
-    /** The 'Delete' button was clicked */
-    private boolean deleteClicked = false;
-
-    /** The 'Add server' button was clicked */
-    private boolean addClicked = false;
-
-    /** The 'Edit' button was clicked */
-    private boolean editClicked = false;
-
-    /** The 'Direct Connect' button was clicked */
-    private boolean directClicked = false;
 
     /** This GUI's lag tooltip text or null if no lag icon is being hovered. */
     private String lagTooltip = null;
 
     /** Instance of ServerData. */
     private ServerData theServerData = null;
-    private LanServerList localNetworkServerList;
-    private ThreadLanServerFind localServerFindThread;
     private int field_74039_z;
     private boolean field_74024_A;
-    private List listofLanServers = Collections.emptyList();
 
     public GuiMultiplayer(GuiScreen par1GuiScreen)
     {
@@ -79,17 +58,6 @@ public class GuiMultiplayer extends GuiScreen
             this.field_74024_A = true;
             this.internetServerList = new ServerList(this.mc);
             this.internetServerList.loadServerList();
-            this.localNetworkServerList = new LanServerList();
-
-            try
-            {
-                this.localServerFindThread = new ThreadLanServerFind(this.localNetworkServerList);
-                this.localServerFindThread.start();
-            }
-            catch (Exception var2)
-            {
-                System.out.println("Unable to start LAN server detection: " + var2.getMessage());
-            }
 
             this.serverSlotContainer = new GuiSlotServer(this);
         }
@@ -107,17 +75,11 @@ public class GuiMultiplayer extends GuiScreen
     public void initGuiControls()
     {
         StringTranslate var1 = StringTranslate.getInstance();
-        this.controlList.add(this.buttonEdit = new GuiButton(7, this.width / 2 - 154, this.height - 28, 70, 20, var1.translateKey("selectServer.edit")));
-        this.controlList.add(this.buttonDelete = new GuiButton(2, this.width / 2 - 74, this.height - 28, 70, 20, var1.translateKey("selectServer.delete")));
-        this.controlList.add(this.buttonSelect = new GuiButton(1, this.width / 2 - 154, this.height - 52, 100, 20, var1.translateKey("selectServer.select")));
-        this.controlList.add(new GuiButton(4, this.width / 2 - 50, this.height - 52, 100, 20, var1.translateKey("selectServer.direct")));
-        this.controlList.add(new GuiButton(3, this.width / 2 + 4 + 50, this.height - 52, 100, 20, var1.translateKey("selectServer.add")));
-        this.controlList.add(new GuiButton(8, this.width / 2 + 4, this.height - 28, 70, 20, var1.translateKey("selectServer.refresh")));
-        this.controlList.add(new GuiButton(0, this.width / 2 + 4 + 76, this.height - 28, 75, 20, var1.translateKey("gui.cancel")));
+        this.controlList.add(this.buttonSelect = new GuiButton(1, this.width / 2 - 154, this.height - 52, 120, 20, var1.translateKey("selectServer.select")));
+        this.controlList.add(new GuiButton(8, this.width / 2 - 30, this.height - 52, 85, 20, var1.translateKey("selectServer.refresh")));
+        this.controlList.add(new GuiButton(0, this.width / 2 + 4 + 56, this.height - 52, 90, 20, var1.translateKey("gui.cancel")));
         boolean var2 = this.selectedServer >= 0 && this.selectedServer < this.serverSlotContainer.getSize();
         this.buttonSelect.enabled = var2;
-        this.buttonEdit.enabled = var2;
-        this.buttonDelete.enabled = var2;
     }
 
     /**
@@ -128,11 +90,6 @@ public class GuiMultiplayer extends GuiScreen
         super.updateScreen();
         ++this.field_74039_z;
 
-        if (this.localNetworkServerList.getWasUpdated())
-        {
-            this.listofLanServers = this.localNetworkServerList.getLanServers();
-            this.localNetworkServerList.setWasNotUpdated();
-        }
     }
 
     /**
@@ -141,12 +98,6 @@ public class GuiMultiplayer extends GuiScreen
     public void onGuiClosed()
     {
         Keyboard.enableRepeatEvents(false);
-
-        if (this.localServerFindThread != null)
-        {
-            this.localServerFindThread.interrupt();
-            this.localServerFindThread = null;
-        }
     }
 
     /**
@@ -156,43 +107,9 @@ public class GuiMultiplayer extends GuiScreen
     {
         if (par1GuiButton.enabled)
         {
-            if (par1GuiButton.id == 2)
-            {
-                String var2 = this.internetServerList.getServerData(this.selectedServer).serverName;
-
-                if (var2 != null)
-                {
-                    this.deleteClicked = true;
-                    StringTranslate var3 = StringTranslate.getInstance();
-                    String var4 = var3.translateKey("selectServer.deleteQuestion");
-                    String var5 = "\'" + var2 + "\' " + var3.translateKey("selectServer.deleteWarning");
-                    String var6 = var3.translateKey("selectServer.deleteButton");
-                    String var7 = var3.translateKey("gui.cancel");
-                    GuiYesNo var8 = new GuiYesNo(this, var4, var5, var6, var7, this.selectedServer);
-                    this.mc.displayGuiScreen(var8);
-                }
-            }
-            else if (par1GuiButton.id == 1)
+            if (par1GuiButton.id == 1)
             {
                 this.joinServer(this.selectedServer);
-            }
-            else if (par1GuiButton.id == 4)
-            {
-                this.directClicked = true;
-                this.mc.displayGuiScreen(new GuiScreenServerList(this, this.theServerData = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
-            }
-            else if (par1GuiButton.id == 3)
-            {
-                this.addClicked = true;
-                this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.theServerData = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
-            }
-            else if (par1GuiButton.id == 7)
-            {
-                this.editClicked = true;
-                ServerData var9 = this.internetServerList.getServerData(this.selectedServer);
-                this.theServerData = new ServerData(var9.serverName, var9.serverIP);
-                this.theServerData.setHideAddress(var9.isHidingAddress());
-                this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.theServerData));
             }
             else if (par1GuiButton.id == 0)
             {
@@ -211,60 +128,7 @@ public class GuiMultiplayer extends GuiScreen
 
     public void confirmClicked(boolean par1, int par2)
     {
-        if (this.deleteClicked)
-        {
-            this.deleteClicked = false;
-
-            if (par1)
-            {
-                this.internetServerList.removeServerData(par2);
-                this.internetServerList.saveServerList();
-                this.selectedServer = -1;
-            }
-
-            this.mc.displayGuiScreen(this);
-        }
-        else if (this.directClicked)
-        {
-            this.directClicked = false;
-
-            if (par1)
-            {
-                this.connectToServer(this.theServerData);
-            }
-            else
-            {
-                this.mc.displayGuiScreen(this);
-            }
-        }
-        else if (this.addClicked)
-        {
-            this.addClicked = false;
-
-            if (par1)
-            {
-                this.internetServerList.addServerData(this.theServerData);
-                this.internetServerList.saveServerList();
-                this.selectedServer = -1;
-            }
-
-            this.mc.displayGuiScreen(this);
-        }
-        else if (this.editClicked)
-        {
-            this.editClicked = false;
-
-            if (par1)
-            {
-                ServerData var3 = this.internetServerList.getServerData(this.selectedServer);
-                var3.serverName = this.theServerData.serverName;
-                var3.serverIP = this.theServerData.serverIP;
-                var3.setHideAddress(this.theServerData.isHidingAddress());
-                this.internetServerList.saveServerList();
-            }
-
-            this.mc.displayGuiScreen(this);
-        }
+        
     }
 
     /**
@@ -348,18 +212,12 @@ public class GuiMultiplayer extends GuiScreen
         else
         {
             par1 -= this.internetServerList.countServers();
-
-            if (par1 < this.listofLanServers.size())
-            {
-                LanServer var2 = (LanServer)this.listofLanServers.get(par1);
-                this.connectToServer(new ServerData(var2.getServerMotd(), var2.getServerIpPort()));
-            }
         }
     }
 
     private void connectToServer(ServerData par1ServerData)
     {
-        this.mc.displayGuiScreen(new GuiConnecting(this.mc, par1ServerData));
+        this.mc.displayGuiScreen(new GuiAuth(this.mc, par1ServerData));
     }
 
     private static void func_74017_b(ServerData par1ServerData) throws IOException
@@ -520,11 +378,6 @@ public class GuiMultiplayer extends GuiScreen
         return par0GuiMultiplayer.internetServerList;
     }
 
-    static List getListOfLanServers(GuiMultiplayer par0GuiMultiplayer)
-    {
-        return par0GuiMultiplayer.listofLanServers;
-    }
-
     static int getSelectedServer(GuiMultiplayer par0GuiMultiplayer)
     {
         return par0GuiMultiplayer.selectedServer;
@@ -541,22 +394,6 @@ public class GuiMultiplayer extends GuiScreen
     static GuiButton getButtonSelect(GuiMultiplayer par0GuiMultiplayer)
     {
         return par0GuiMultiplayer.buttonSelect;
-    }
-
-    /**
-     * Return buttonEdit GuiButton
-     */
-    static GuiButton getButtonEdit(GuiMultiplayer par0GuiMultiplayer)
-    {
-        return par0GuiMultiplayer.buttonEdit;
-    }
-
-    /**
-     * Return buttonDelete GuiButton
-     */
-    static GuiButton getButtonDelete(GuiMultiplayer par0GuiMultiplayer)
-    {
-        return par0GuiMultiplayer.buttonDelete;
     }
 
     static void func_74008_b(GuiMultiplayer par0GuiMultiplayer, int par1)

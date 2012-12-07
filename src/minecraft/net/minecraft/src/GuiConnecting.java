@@ -9,10 +9,14 @@ public class GuiConnecting extends GuiScreen
 
     /** True if the connection attempt has been cancelled. */
     private boolean cancelled = false;
-
-    public GuiConnecting(Minecraft par1Minecraft, ServerData par2ServerData)
+    private String user;
+    private String pass;
+    
+    public GuiConnecting(Minecraft par1Minecraft, ServerData par2ServerData, String username, String password)
     {
         this.mc = par1Minecraft;
+        this.user = username;
+        this.pass = password;
         ServerAddress var3 = ServerAddress.func_78860_a(par2ServerData.serverIP);
         par1Minecraft.loadWorld((WorldClient)null);
         par1Minecraft.setServerData(par2ServerData);
@@ -29,7 +33,7 @@ public class GuiConnecting extends GuiScreen
     private void spawnNewServerThread(String par1Str, int par2)
     {
         System.out.println("Connecting to " + par1Str + ", " + par2);
-        (new ThreadConnectToServer(this, par1Str, par2)).start();
+        (new ThreadConnectToServer(this, par1Str, par2, user, pass)).start();
     }
 
     /**

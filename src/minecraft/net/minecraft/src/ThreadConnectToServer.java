@@ -13,12 +13,17 @@ class ThreadConnectToServer extends Thread
 
     /** A reference to the GuiConnecting object. */
     final GuiConnecting connectingGui;
-
-    ThreadConnectToServer(GuiConnecting par1GuiConnecting, String par2Str, int par3)
+    
+    private String user;
+    private String pass;
+    
+    ThreadConnectToServer(GuiConnecting par1GuiConnecting, String par2Str, int par3, String user, String pass)
     {
         this.connectingGui = par1GuiConnecting;
         this.ip = par2Str;
         this.port = par3;
+        this.user = user;
+        this.pass = pass;
     }
 
     public void run()
@@ -32,7 +37,7 @@ class ThreadConnectToServer extends Thread
                 return;
             }
 
-            GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(49, GuiConnecting.func_74254_c(this.connectingGui).session.username, this.ip, this.port));
+            GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(49, this.user, pass, this.ip, this.port));
         }
         catch (UnknownHostException var2)
         {

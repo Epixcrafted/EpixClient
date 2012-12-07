@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 public class GuiScreenServerList extends GuiScreen
 {
