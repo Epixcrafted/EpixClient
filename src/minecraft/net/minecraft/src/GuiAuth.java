@@ -94,7 +94,7 @@ public class GuiAuth extends GuiScreen
         }
         else if (par1GuiButton.id == 0)
         {
-        	this.mc.displayGuiScreen(new GuiConnecting(this.mc, this.server, loginF.getText(), passF.getText()));
+        	auth(loginF.getText(), passF.getText());
         }
     }
 
@@ -126,7 +126,7 @@ public class GuiAuth extends GuiScreen
             {
         		if (passF.isFocused())//isFocused
         		{
-        			this.mc.displayGuiScreen(new GuiConnecting(this.mc, this.server, loginF.getText(), passF.getText()));
+        			auth(loginF.getText(), passF.getText());
         		}
             }
         }
@@ -140,7 +140,19 @@ public class GuiAuth extends GuiScreen
             
         
     }
-
+    
+    private void auth(String login, String pass) {
+    	FileWriter fw;
+		try {
+			fw = new FileWriter("bin/username");
+			fw.write(loginF.getText());
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.mc.displayGuiScreen(new GuiConnecting(this.mc, this.server, login, pass));
+    }
 	/**
      * Called when the mouse is clicked.
      */
@@ -164,16 +176,5 @@ public class GuiAuth extends GuiScreen
         loginF.drawTextBox();
         passF.drawTextBox();
         super.drawScreen(par1, par2, par3);
-    }
-    
-    private String readStreamToString(InputStream in, String encoding)
-            throws IOException {
-        StringBuffer b = new StringBuffer();
-        InputStreamReader r = new InputStreamReader(in, encoding);
-        int c;
-        while ((c = r.read()) != -1) {
-            b.append((char)c);
-        }
-        return b.toString();
     }
 }
