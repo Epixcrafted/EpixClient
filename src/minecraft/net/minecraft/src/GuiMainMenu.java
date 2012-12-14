@@ -21,10 +21,6 @@ public class GuiMainMenu extends GuiScreen
     /** Counts the number of screen updates. */
     private float updateCounter = 0.0F;
 
-    /** The splash message. */
-    private String splashText = "missingno";
-    private GuiButton buttonResetDemo;
-
     /** Timer used to rotate the panorama, increases every tick. */
     private int panoramaTimer = 0;
 
@@ -36,52 +32,11 @@ public class GuiMainMenu extends GuiScreen
     /** An array of all the paths to the panorama pictures. */
     private static final String[] titlePanoramaPaths = new String[] {"/title/bg/panorama0.png", "/title/bg/panorama1.png", "/title/bg/panorama2.png", "/title/bg/panorama3.png", "/title/bg/panorama4.png", "/title/bg/panorama5.png"};
 
+    private boolean shouldShowGUI = true;
+    
     public GuiMainMenu()
     {
-        BufferedReader var1 = null;
-
-        try
-        {
-            ArrayList var2 = new ArrayList();
-            var1 = new BufferedReader(new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));
-            String var3;
-
-            while ((var3 = var1.readLine()) != null)
-            {
-                var3 = var3.trim();
-
-                if (var3.length() > 0)
-                {
-                    var2.add(var3);
-                }
-            }
-
-            do
-            {
-                this.splashText = (String)var2.get(rand.nextInt(var2.size()));
-            }
-            while (this.splashText.hashCode() == 125780783);
-        }
-        catch (IOException var12)
-        {
-            ;
-        }
-        finally
-        {
-            if (var1 != null)
-            {
-                try
-                {
-                    var1.close();
-                }
-                catch (IOException var11)
-                {
-                    ;
-                }
-            }
-        }
-
-        this.updateCounter = rand.nextFloat();
+    	
     }
 
     /**
@@ -97,7 +52,7 @@ public class GuiMainMenu extends GuiScreen
      */
     public boolean doesGuiPauseGame()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -111,49 +66,15 @@ public class GuiMainMenu extends GuiScreen
     public void initGui()
     {
         this.viewportTexture = this.mc.renderEngine.allocateAndSetupTexture(new BufferedImage(256, 256, 2));
-        Calendar var1 = Calendar.getInstance();
-        var1.setTime(new Date());
-
-        if (var1.get(2) + 1 == 11 && var1.get(5) == 9)
-        {
-            this.splashText = "Happy birthday, ez!";
-        }
-        else if (var1.get(2) + 1 == 6 && var1.get(5) == 1)
-        {
-            this.splashText = "Happy birthday, Notch!";
-        }
-        else if (var1.get(2) + 1 == 12 && var1.get(5) == 24)
-        {
-            this.splashText = "Merry X-mas!";
-        }
-        else if (var1.get(2) + 1 == 1 && var1.get(5) == 1)
-        {
-            this.splashText = "Happy new year!";
-        }
-        else if (var1.get(2) + 1 == 10 && var1.get(5) == 31)
-        {
-            this.splashText = "OOoooOOOoooo! Spooky!";
-        }
 
         StringTranslate var2 = StringTranslate.getInstance();
-        int var4 = this.height / 4 + 48;
+        int var4 = this.height / 5 + 24;
 
-        this.addSingleplayerMultiplayerButtons(var4, 24, var2);
-
-        this.controlList.add(new GuiButton(3, this.width / 2 - 100, var4 + 48, var2.translateKey("menu.mods")));
-
-        this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72 + 12, 98, 20, var2.translateKey("menu.options")));
-        this.controlList.add(new GuiButton(4, this.width / 2 + 2, var4 + 72 + 12, 98, 20, var2.translateKey("menu.quit")));
-
-        this.controlList.add(new GuiButtonLanguage(5, this.width / 2 - 124, var4 + 72 + 12));
-    }
-
-    /**
-     * Adds Singleplayer and Multiplayer buttons on Main Menu for players who have bought the game.
-     */
-    private void addSingleplayerMultiplayerButtons(int par1, int par2, StringTranslate par3StringTranslate)
-    {
-        this.controlList.add(new GuiButton(2, this.width / 2 - 100, par1 + par2 * 1, par3StringTranslate.translateKey("menu.multiplayer")));
+        this.controlList.add(new GuiEpixButton(0, 0, var4 + 24 + 0, var2.translateKey("menu.multiplayer")));
+        this.controlList.add(new GuiEpixButton(1, 0, var4 + 48 + 2, var2.translateKey("menu.options")));
+        this.controlList.add(new GuiEpixButton(2, 0, var4 + 72 + 4, var2.translateKey("options.language")));
+        this.controlList.add(new GuiEpixButton(3, 0, var4 + 96 + 6, var2.translateKey("menu.quit")));
+        this.controlList.add(new GuiEpixTransparentButton(4, this.width - this.fontRenderer.getStringWidth(this.mc.session.username) - 2, 0, this.mc.session.username));
     }
 
     /**
@@ -163,61 +84,33 @@ public class GuiMainMenu extends GuiScreen
     {
         if (par1GuiButton.id == 0)
         {
-            this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+            this.mc.displayGuiScreen(new GuiMultiplayer(this));
         }
-
-        if (par1GuiButton.id == 5)
-        {
-            this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings));
-        }
-
+        
         if (par1GuiButton.id == 1)
         {
-            this.mc.displayGuiScreen(new GuiSelectWorld(this));
+            this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
         }
 
         if (par1GuiButton.id == 2)
         {
-            this.mc.displayGuiScreen(new GuiMultiplayer(this));
+            this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings));
         }
 
         if (par1GuiButton.id == 3)
         {
-            this.mc.displayGuiScreen(new GuiTexturePacks(this));
-        }
-
-        if (par1GuiButton.id == 4)
-        {
             this.mc.shutdown();
         }
-
-        if (par1GuiButton.id == 11)
+        
+        if (par1GuiButton.id == 4) 
         {
-            this.mc.launchIntegratedServer("Demo_World", "Demo_World", DemoWorldServer.demoWorldSettings);
-        }
-
-        if (par1GuiButton.id == 12)
-        {
-            ISaveFormat var2 = this.mc.getSaveLoader();
-            WorldInfo var3 = var2.getWorldInfo("Demo_World");
-
-            if (var3 != null)
-            {
-                GuiYesNo var4 = GuiSelectWorld.getDeleteWorldScreen(this, var3.getWorldName(), 12);
-                this.mc.displayGuiScreen(var4);
-            }
+        	this.mc.displayGuiScreen(new GuiEpixAuth(mc, this));
         }
     }
 
     public void confirmClicked(boolean par1, int par2)
     {
-        if (par1 && par2 == 12)
-        {
-            ISaveFormat var3 = this.mc.getSaveLoader();
-            var3.flushCache();
-            var3.deleteWorldDirectory("Demo_World");
-            this.mc.displayGuiScreen(this);
-        }
+    	
     }
 
     /**
@@ -407,21 +300,19 @@ public class GuiMainMenu extends GuiScreen
         GL11.glPushMatrix();
         GL11.glTranslatef((float)(this.width / 2 + 90), 70.0F, 0.0F);
         GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
-        float var8 = 1.8F - MathHelper.abs(MathHelper.sin((float)(Minecraft.getSystemTime() % 1000L) / 1000.0F * (float)Math.PI * 2.0F) * 0.1F);
-        var8 = var8 * 100.0F / (float)(this.fontRenderer.getStringWidth(this.splashText) + 32);
-        GL11.glScalef(var8, var8, var8);
-        this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
         GL11.glPopMatrix();
-        String var9 = "Minecraft 1.4.5";
-
-        if (this.mc.isDemo())
-        {
-            var9 = var9 + " Demo";
-        }
-
+        String var9 = "EpixClient";
+        
         this.drawString(this.fontRenderer, var9, 2, this.height - 10, 16777215);
-        String var10 = "Copyright Mojang AB. Do not distribute!";
-        this.drawString(this.fontRenderer, var10, this.width - this.fontRenderer.getStringWidth(var10) - 2, this.height - 10, 16777215);
+        String var10 = StringTranslate.getInstance().translateKey("epix.loggedInAs");
+        this.drawString(this.fontRenderer, var10, this.width - this.fontRenderer.getStringWidth(var10) - this.fontRenderer.getStringWidth(this.mc.session.username) - 5, 6, 0xFFB87F);
+        if (updateCounter > 2F) {
+        	if (shouldShowGUI) {
+        		this.mc.displayGuiScreen(new GuiEpixAuth(mc, this));
+        		shouldShowGUI = false;
+        	}
+        }
+        updateCounter++;
         super.drawScreen(par1, par2, par3);
     }
 }

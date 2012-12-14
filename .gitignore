@@ -1,4 +1,6 @@
-/bin
+/bin/minecraft/net
+/bin/minecraft/org
+/bin/minecraft/argo
 /docs
 /eclipse
 /conf
@@ -21,3 +23,4 @@
 /updatemcp.*
 /updatemd5.*
 /updatenames.*
+Thumbs.*

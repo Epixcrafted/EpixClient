@@ -76,7 +76,7 @@ public class GuiMultiplayer extends GuiScreen
     {
         StringTranslate var1 = StringTranslate.getInstance();
         this.controlList.add(this.buttonSelect = new GuiButton(1, this.width / 2 - 154, this.height - 52, 120, 20, var1.translateKey("selectServer.select")));
-        this.controlList.add(new GuiButton(8, this.width / 2 - 30, this.height - 52, 85, 20, var1.translateKey("selectServer.refresh")));
+        this.controlList.add(new GuiButton(2, this.width / 2 - 30, this.height - 52, 85, 20, var1.translateKey("selectServer.refresh")));
         this.controlList.add(new GuiButton(0, this.width / 2 + 4 + 56, this.height - 52, 90, 20, var1.translateKey("gui.cancel")));
         boolean var2 = this.selectedServer >= 0 && this.selectedServer < this.serverSlotContainer.getSize();
         this.buttonSelect.enabled = var2;
@@ -113,9 +113,9 @@ public class GuiMultiplayer extends GuiScreen
             }
             else if (par1GuiButton.id == 0)
             {
-                this.mc.shutdown();
+                this.mc.displayGuiScreen(this.parentScreen);
             }
-            else if (par1GuiButton.id == 8)
+            else if (par1GuiButton.id == 2)
             {
                 this.mc.displayGuiScreen(new GuiMultiplayer(this.parentScreen));
             }
@@ -199,7 +199,6 @@ public class GuiMultiplayer extends GuiScreen
             this.func_74007_a(this.lagTooltip, par1, par2);
         }
     }
-
     /**
      * Join server by slot index
      */
@@ -217,7 +216,11 @@ public class GuiMultiplayer extends GuiScreen
 
     private void connectToServer(ServerData par1ServerData)
     {
-        this.mc.displayGuiScreen(new GuiAuth(this.mc, par1ServerData));
+    	if (this.mc.session.username != "" && this.mc.session.password != "") {
+    		this.mc.displayGuiScreen(new GuiConnecting(this.mc, par1ServerData, this.mc.session.username, this.mc.session.password));
+    	} else {
+    		this.mc.displayGuiScreen(new GuiDisconnected("Connection error", "You are not authorized.", null));
+    	}
     }
 
     private static void func_74017_b(ServerData par1ServerData) throws IOException

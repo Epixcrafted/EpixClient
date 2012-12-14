@@ -105,7 +105,7 @@ public class NetClientHandler extends NetHandler
         if (!"-".equals(var2))
         {
             String var5 = (new BigInteger(CryptManager.func_75895_a(var2, var3, var4))).toString(16);
-            String var6 = this.func_72550_a(this.mc.session.username, this.mc.session.sessionId, var5);
+            String var6 = this.func_72550_a(this.mc.session.username, this.mc.session.password, var5);
 
             if (!"ok".equalsIgnoreCase(var6))
             {

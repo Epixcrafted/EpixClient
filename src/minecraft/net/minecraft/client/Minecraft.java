@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.swing.JPanel;
 import net.minecraft.src.*;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -359,14 +360,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
 
-        if (this.serverName != null)
-        {
-            this.displayGuiScreen(new GuiConnecting(this, this.serverName, this.serverPort));
-        }
-        else
-        {
-            this.displayGuiScreen(new GuiMultiplayer(currentScreen));
-        }
+        this.displayGuiScreen(new GuiMainMenu());
 
         this.loadingScreen = new LoadingScreenRenderer(this);
 
@@ -2127,7 +2121,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             }
             else
             {
-                var2 = true;
+                //var2 = true; NO DEMO MODE FOR NOW
             }
 
             if (var10)
@@ -2149,7 +2143,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
         var12.setPreferredSize(new Dimension(854, 480));
         var13.add(var12, "Center");
         var13.pack();
-        var13.setLocationRelativeTo((Component)null);
+        var13.setLocationRelativeTo(null);
         var13.setVisible(true);
         var13.addWindowListener(new GameWindowListener());
         MinecraftFakeLauncher var14 = new MinecraftFakeLauncher(var1);

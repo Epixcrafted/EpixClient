@@ -7,12 +7,12 @@ public class Session
 {
     public static List registeredBlocksList = new ArrayList();
     public String username;
-    public String sessionId;
+    public String password;
 
     public Session(String par1Str, String par2Str)
     {
         this.username = par1Str;
-        this.sessionId = par2Str;
+        this.password = par2Str;
     }
 
     static

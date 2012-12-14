@@ -30,10 +30,10 @@ public class MinecraftApplet extends Applet
             this.mc.minecraftUri = this.mc.minecraftUri + ":" + this.getDocumentBase().getPort();
         }
 
-        if (this.getParameter("username") != null && this.getParameter("sessionid") != null)
+        if (this.getParameter("username") != null && this.getParameter("password") != null)
         {
-            this.mc.session = new Session(this.getParameter("username"), this.getParameter("sessionid"));
-            System.out.println("Setting user: " + this.mc.session.username + ", " + this.mc.session.sessionId);
+            this.mc.session = new Session(this.getParameter("username"), this.getParameter("password"));
+            System.out.println("Setting user: " + this.mc.session.username);
         }
         else
         {

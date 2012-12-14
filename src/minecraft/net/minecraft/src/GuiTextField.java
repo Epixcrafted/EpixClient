@@ -7,44 +7,44 @@ public class GuiTextField extends Gui
     /**
      * Have the font renderer from GuiScreen to render the textbox text into the screen.
      */
-    private final FontRenderer fontRenderer;
-    private final int xPos;
-    private final int yPos;
+    protected final FontRenderer fontRenderer;
+    protected final int xPos;
+    protected final int yPos;
 
     /** The width of this text field. */
-    private final int width;
-    private final int height;
+    protected final int width;
+    protected final int height;
 
     /** Have the current text beign edited on the textbox. */
-    private String text = "";
-    private int maxStringLength = 32;
-    private int cursorCounter;
-    private boolean enableBackgroundDrawing = true;
+    protected String text = "";
+    protected int maxStringLength = 32;
+    protected int cursorCounter;
+    protected boolean enableBackgroundDrawing = true;
 
     /**
      * if true the textbox can lose focus by clicking elsewhere on the screen
      */
-    private boolean canLoseFocus = true;
+    protected boolean canLoseFocus = true;
 
     /**
      * If this value is true along isEnabled, keyTyped will process the keys.
      */
-    private boolean isFocused = false;
+    protected boolean isFocused = false;
 
     /**
      * If this value is true along isFocused, keyTyped will process the keys.
      */
-    private boolean isEnabled = true;
-    private int field_73816_n = 0;
-    private int cursorPosition = 0;
+    protected boolean isEnabled = true;
+    protected int field_73816_n = 0;
+    protected int cursorPosition = 0;
 
     /** other selection position, maybe the same as the cursor */
-    private int selectionEnd = 0;
-    private int enabledColor = 14737632;
-    private int disabledColor = 7368816;
+    protected int selectionEnd = 0;
+    protected int enabledColor = 14737632;
+    protected int disabledColor = 7368816;
 
     /** True if this textbox is visible */
-    private boolean visible = true;
+    protected boolean visible = true;
 
     public GuiTextField(FontRenderer par1FontRenderer, int par2, int par3, int par4, int par5)
     {
@@ -541,7 +541,7 @@ public class GuiTextField extends Gui
     /**
      * draws the vertical line cursor in the textbox
      */
-    private void drawCursorVertical(int par1, int par2, int par3, int par4)
+    protected void drawCursorVertical(int par1, int par2, int par3, int par4)
     {
         int var5;
 
