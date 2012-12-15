@@ -35,8 +35,9 @@ public class GuiEpixAuth extends GuiScreen {
         Keyboard.enableRepeatEvents(true);
         controlList.clear();
         controlList.add(new GuiButton(0, width / 2 - 90, height / 4 + 51 + 12, 180, 20, stringtranslate.translateKey("epix.auth.logIn")));
-        controlList.add(new GuiButton(1, width / 2 - 90, height / 4 + 75 + 12, 85, 20, stringtranslate.translateKey("epix.auth.forgotPass")));
-        controlList.add(new GuiButton(2, width / 2 + 6, height / 4 + 75 + 12, 85, 20, stringtranslate.translateKey("epix.auth.skip")));
+        controlList.add(new GuiButton(4, width / 2 - 90, height / 4 + 75 + 12, 180, 20, stringtranslate.translateKey("epix.auth.register")));
+        controlList.add(new GuiButton(1, width / 2 - 90, height / 4 + 75 + 12 + 24, 85, 20, stringtranslate.translateKey("epix.auth.forgotPass")));
+        controlList.add(new GuiButton(2, width / 2 + 6, height / 4 + 75 + 12 + 24, 85, 20, stringtranslate.translateKey("epix.auth.skip")));
         controlList.add(new GuiEpixTransparentButton(3, width / 2 + 90 - fontRenderer.getStringWidth(stringtranslate.translateKey("epix.auth.showPass")), ((height - 224 + 135)/ 2) - 2, 50, 15, stringtranslate.translateKey("epix.auth.showPass"), 0xADFFE7));
         login = new GuiTextField(fontRenderer, ((width-192+12) / 2), ((height - 224 + 75)/ 2), 180, 20);
         login.setFocused(true);
@@ -61,6 +62,7 @@ public class GuiEpixAuth extends GuiScreen {
         if (par1GuiButton.id == 1)  Browser.openURL("http://vk.com/brilzlian");
         if (par1GuiButton.id == 2) this.mc.displayGuiScreen(lastScreen);
         if (par1GuiButton.id == 3) pass.toggleShowingText();
+        if (par1GuiButton.id == 4)  Browser.openURL("http://vk.com/brilzlian2");
     }
     
     protected void keyTyped(char par1, int par2)

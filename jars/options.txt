@@ -17,7 +17,7 @@ ao:true
 clouds:true
 skin:Default
 lastServer:
-lang:en_US
+lang:ru_RU
 chatVisibility:0
 chatColors:true
 chatLinks:true

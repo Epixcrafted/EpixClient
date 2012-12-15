@@ -1084,4 +1084,5 @@ epix.auth.password=Пароль:
 epix.auth.logIn=Войти
 epix.auth.forgotPass=Забыл пароль
 epix.auth.skip=Пропустить
+epix.auth.register=Регистрация
 epix.auth.showPass=Показ.
