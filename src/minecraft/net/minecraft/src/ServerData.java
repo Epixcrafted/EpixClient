@@ -19,7 +19,7 @@ public class ServerData
 
     /** last server ping that showed up in the server browser */
     public long pingToServer;
-    public int field_82821_f = 49;
+    public int field_82821_f = -1;
 
     /** Game version for this server. */
     public String gameVersion = "1.4.5";

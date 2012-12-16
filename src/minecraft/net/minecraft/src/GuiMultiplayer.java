@@ -128,7 +128,7 @@ public class GuiMultiplayer extends GuiScreen
 
     public void confirmClicked(boolean par1, int par2)
     {
-        
+    	
     }
 
     /**
@@ -240,7 +240,7 @@ public class GuiMultiplayer extends GuiScreen
             var3 = new DataInputStream(var2.getInputStream());
             var4 = new DataOutputStream(var2.getOutputStream());
             var4.write(254);
-            var4.write(1);
+            var4.write(3);
 
             if (var3.read() != 255)
             {
