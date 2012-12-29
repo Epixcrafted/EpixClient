@@ -98,14 +98,15 @@ public class NetClientHandler extends NetHandler
 
     public void handleServerAuthData(Packet253ServerAuthData par1Packet253ServerAuthData)
     {
-        String var2 = par1Packet253ServerAuthData.getServerId().trim();
+    	throw new ReportedException(new CrashReport("EpixClient doesn't support LAUNCHER-CLIENT-SERVER authentification scheme", new Throwable()));
+        /*String var2 = par1Packet253ServerAuthData.getServerId().trim();
         PublicKey var3 = par1Packet253ServerAuthData.getPublicKey();
         SecretKey var4 = CryptManager.func_75890_a();
 
         if (!"-".equals(var2))
         {
             String var5 = (new BigInteger(CryptManager.func_75895_a(var2, var3, var4))).toString(16);
-            String var6 = this.func_72550_a(this.mc.session.username, this.mc.session.sessionId, var5);
+            String var6 = this.func_72550_a(this.mc.session.username, this.mc.session.password, var5);
 
             if (!"ok".equalsIgnoreCase(var6))
             {
@@ -114,7 +115,7 @@ public class NetClientHandler extends NetHandler
             }
         }
 
-        this.addToSendQueue(new Packet252SharedKey(var4, var3, par1Packet253ServerAuthData.getVerifyToken()));
+        this.addToSendQueue(new Packet252SharedKey(var4, var3, par1Packet253ServerAuthData.getVerifyToken()));*/
     }
 
     private String func_72550_a(String par1Str, String par2Str, String par3Str)
