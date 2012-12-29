@@ -270,8 +270,9 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         var1.itemList.clear();
         Item[] var2 = Item.itemsList;
         int var3 = var2.length;
+        int var4;
 
-        for (int var4 = 0; var4 < var3; ++var4)
+        for (var4 = 0; var4 < var3; ++var4)
         {
             Item var5 = var2[var4];
 
@@ -281,14 +282,27 @@ public class GuiContainerCreative extends InventoryEffectRenderer
             }
         }
 
-        Iterator var8 = var1.itemList.iterator();
-        String var9 = this.searchField.getText().toLowerCase();
+        Enchantment[] var8 = Enchantment.enchantmentsList;
+        var3 = var8.length;
 
-        while (var8.hasNext())
+        for (var4 = 0; var4 < var3; ++var4)
         {
-            ItemStack var10 = (ItemStack)var8.next();
-            boolean var11 = false;
-            Iterator var6 = var10.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
+            Enchantment var12 = var8[var4];
+
+            if (var12 != null && var12.type != null)
+            {
+                Item.field_92105_bW.func_92113_a(var12, var1.itemList);
+            }
+        }
+
+        Iterator var9 = var1.itemList.iterator();
+        String var10 = this.searchField.getText().toLowerCase();
+
+        while (var9.hasNext())
+        {
+            ItemStack var11 = (ItemStack)var9.next();
+            boolean var13 = false;
+            Iterator var6 = var11.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
 
             while (true)
             {
@@ -296,17 +310,17 @@ public class GuiContainerCreative extends InventoryEffectRenderer
                 {
                     String var7 = (String)var6.next();
 
-                    if (!var7.toLowerCase().contains(var9))
+                    if (!var7.toLowerCase().contains(var10))
                     {
                         continue;
                     }
 
-                    var11 = true;
+                    var13 = true;
                 }
 
-                if (!var11)
+                if (!var13)
                 {
-                    var8.remove();
+                    var9.remove();
                 }
 
                 break;

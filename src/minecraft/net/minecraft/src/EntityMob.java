@@ -120,6 +120,11 @@ public abstract class EntityMob extends EntityCreature implements IMob
             {
                 par1Entity.setFire(var5 * 4);
             }
+
+            if (par1Entity instanceof EntityLiving)
+            {
+                EnchantmentThorns.func_92096_a(this, (EntityLiving)par1Entity, this.rand);
+            }
         }
 
         return var4;

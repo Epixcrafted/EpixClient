@@ -82,6 +82,7 @@ public abstract class ServerConfigurationManager
         var6.sendPacketToPlayer(new Packet1Login(par2EntityPlayerMP.entityId, var4.getWorldInfo().getTerrainType(), par2EntityPlayerMP.theItemInWorldManager.getGameType(), var4.getWorldInfo().isHardcoreModeEnabled(), var4.provider.dimensionId, var4.difficultySetting, var4.getHeight(), this.getMaxPlayers()));
         var6.sendPacketToPlayer(new Packet6SpawnPosition(var5.posX, var5.posY, var5.posZ));
         var6.sendPacketToPlayer(new Packet202PlayerAbilities(par2EntityPlayerMP.capabilities));
+        var6.sendPacketToPlayer(new Packet16BlockItemSwitch(par2EntityPlayerMP.inventory.currentItem));
         this.updateTimeAndWeatherForPlayer(par2EntityPlayerMP, var4);
         this.sendPacketToAllPlayers(new Packet3Chat("\u00a7e" + par2EntityPlayerMP.username + " joined the game."));
         this.playerLoggedIn(par2EntityPlayerMP);
@@ -750,6 +751,7 @@ public abstract class ServerConfigurationManager
     {
         par1EntityPlayerMP.sendContainerToPlayer(par1EntityPlayerMP.inventoryContainer);
         par1EntityPlayerMP.setPlayerHealthUpdated();
+        par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet16BlockItemSwitch(par1EntityPlayerMP.inventory.currentItem));
     }
 
     /**
@@ -861,5 +863,11 @@ public abstract class ServerConfigurationManager
         {
             ((EntityPlayerMP)this.playerEntityList.get(0)).playerNetServerHandler.kickPlayerFromServer("Server closed");
         }
+    }
+
+    public void func_92062_k(String par1Str)
+    {
+        this.mcServer.logInfo(par1Str);
+        this.sendPacketToAllPlayers(new Packet3Chat(par1Str));
     }
 }

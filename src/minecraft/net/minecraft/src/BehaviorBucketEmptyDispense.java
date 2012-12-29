@@ -4,15 +4,15 @@ import net.minecraft.server.MinecraftServer;
 
 public class BehaviorBucketEmptyDispense extends BehaviorDefaultDispenseItem
 {
-    /** Reference to the BehaviorDefaultDispenseItem object. */
-    private final BehaviorDefaultDispenseItem defaultItemDispenseBehavior;
+    private final BehaviorDefaultDispenseItem field_92073_c;
 
+    /** Reference to the MinecraftServer object. */
     final MinecraftServer mcServer;
 
     public BehaviorBucketEmptyDispense(MinecraftServer par1)
     {
         this.mcServer = par1;
-        this.defaultItemDispenseBehavior = new BehaviorDefaultDispenseItem();
+        this.field_92073_c = new BehaviorDefaultDispenseItem();
     }
 
     /**
@@ -52,7 +52,7 @@ public class BehaviorBucketEmptyDispense extends BehaviorDefaultDispenseItem
         }
         else if (((TileEntityDispenser)par1IBlockSource.func_82619_j()).func_70360_a(new ItemStack(var10)) < 0)
         {
-            this.defaultItemDispenseBehavior.dispense(par1IBlockSource, new ItemStack(var10));
+            this.field_92073_c.dispense(par1IBlockSource, new ItemStack(var10));
         }
 
         return par2ItemStack;

@@ -105,39 +105,40 @@ public class Explosion
         var3 = MathHelper.floor_double(this.explosionX - (double)this.explosionSize - 1.0D);
         var4 = MathHelper.floor_double(this.explosionX + (double)this.explosionSize + 1.0D);
         var5 = MathHelper.floor_double(this.explosionY - (double)this.explosionSize - 1.0D);
-        int var28 = MathHelper.floor_double(this.explosionY + (double)this.explosionSize + 1.0D);
+        int var29 = MathHelper.floor_double(this.explosionY + (double)this.explosionSize + 1.0D);
         int var7 = MathHelper.floor_double(this.explosionZ - (double)this.explosionSize - 1.0D);
-        int var29 = MathHelper.floor_double(this.explosionZ + (double)this.explosionSize + 1.0D);
-        List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)var3, (double)var5, (double)var7, (double)var4, (double)var28, (double)var29));
-        Vec3 var30 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
+        int var30 = MathHelper.floor_double(this.explosionZ + (double)this.explosionSize + 1.0D);
+        List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)var3, (double)var5, (double)var7, (double)var4, (double)var29, (double)var30));
+        Vec3 var31 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
 
         for (int var11 = 0; var11 < var9.size(); ++var11)
         {
-            Entity var31 = (Entity)var9.get(var11);
-            double var13 = var31.getDistance(this.explosionX, this.explosionY, this.explosionZ) / (double)this.explosionSize;
+            Entity var32 = (Entity)var9.get(var11);
+            double var13 = var32.getDistance(this.explosionX, this.explosionY, this.explosionZ) / (double)this.explosionSize;
 
             if (var13 <= 1.0D)
             {
-                var15 = var31.posX - this.explosionX;
-                var17 = var31.posY + (double)var31.getEyeHeight() - this.explosionY;
-                var19 = var31.posZ - this.explosionZ;
-                double var33 = (double)MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
+                var15 = var32.posX - this.explosionX;
+                var17 = var32.posY + (double)var32.getEyeHeight() - this.explosionY;
+                var19 = var32.posZ - this.explosionZ;
+                double var34 = (double)MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
 
-                if (var33 != 0.0D)
+                if (var34 != 0.0D)
                 {
-                    var15 /= var33;
-                    var17 /= var33;
-                    var19 /= var33;
-                    double var32 = (double)this.worldObj.getBlockDensity(var30, var31.boundingBox);
-                    double var34 = (1.0D - var13) * var32;
-                    var31.attackEntityFrom(DamageSource.explosion, (int)((var34 * var34 + var34) / 2.0D * 8.0D * (double)this.explosionSize + 1.0D));
-                    var31.motionX += var15 * var34;
-                    var31.motionY += var17 * var34;
-                    var31.motionZ += var19 * var34;
+                    var15 /= var34;
+                    var17 /= var34;
+                    var19 /= var34;
+                    double var33 = (double)this.worldObj.getBlockDensity(var31, var32.boundingBox);
+                    double var35 = (1.0D - var13) * var33;
+                    var32.attackEntityFrom(DamageSource.explosion, (int)((var35 * var35 + var35) / 2.0D * 8.0D * (double)this.explosionSize + 1.0D));
+                    double var36 = EnchantmentProtection.func_92092_a(var32, var35);
+                    var32.motionX += var15 * var36;
+                    var32.motionY += var17 * var36;
+                    var32.motionZ += var19 * var36;
 
-                    if (var31 instanceof EntityPlayer)
+                    if (var32 instanceof EntityPlayer)
                     {
-                        this.field_77288_k.put((EntityPlayer)var31, this.worldObj.getWorldVec3Pool().getVecFromPool(var15 * var34, var17 * var34, var19 * var34));
+                        this.field_77288_k.put((EntityPlayer)var32, this.worldObj.getWorldVec3Pool().getVecFromPool(var15 * var35, var17 * var35, var19 * var35));
                     }
                 }
             }

@@ -29,7 +29,7 @@ public class RenderItem extends Render
     public void doRenderItem(EntityItem par1EntityItem, double par2, double par4, double par6, float par8, float par9)
     {
         this.random.setSeed(187L);
-        ItemStack var10 = par1EntityItem.item;
+        ItemStack var10 = par1EntityItem.func_92059_d();
 
         if (var10.getItem() != null)
         {
@@ -38,19 +38,24 @@ public class RenderItem extends Render
             float var12 = (((float)par1EntityItem.age + par9) / 20.0F + par1EntityItem.hoverStart) * (180F / (float)Math.PI);
             byte var13 = 1;
 
-            if (par1EntityItem.item.stackSize > 1)
+            if (par1EntityItem.func_92059_d().stackSize > 1)
             {
                 var13 = 2;
             }
 
-            if (par1EntityItem.item.stackSize > 5)
+            if (par1EntityItem.func_92059_d().stackSize > 5)
             {
                 var13 = 3;
             }
 
-            if (par1EntityItem.item.stackSize > 20)
+            if (par1EntityItem.func_92059_d().stackSize > 20)
             {
                 var13 = 4;
+            }
+
+            if (par1EntityItem.func_92059_d().stackSize > 40)
+            {
+                var13 = 5;
             }
 
             GL11.glTranslatef((float)par2, (float)par4 + var11, (float)par6);
@@ -111,7 +116,6 @@ public class RenderItem extends Render
                     {
                         GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
                         GL11.glTranslatef(0.0F, -0.05F, 0.0F);
-                        GL11.glDisable(GL11.GL_LIGHTING);
                     }
                     else
                     {
@@ -122,6 +126,7 @@ public class RenderItem extends Render
 
                     for (var15 = 0; var15 <= 1; ++var15)
                     {
+                        this.random.setSeed(187L);
                         var16 = var10.getItem().getIconFromDamageForRenderPass(var10.getItemDamage(), var15);
                         var17 = 1.0F;
 
@@ -132,9 +137,12 @@ public class RenderItem extends Render
                             var20 = (float)(var18 >> 8 & 255) / 255.0F;
                             float var21 = (float)(var18 & 255) / 255.0F;
                             GL11.glColor4f(var19 * var17, var20 * var17, var21 * var17, 1.0F);
+                            this.func_77020_a(par1EntityItem, var16, var13, par9, var19 * var17, var20 * var17, var21 * var17);
                         }
-
-                        this.func_77020_a(var16, var13);
+                        else
+                        {
+                            this.func_77020_a(par1EntityItem, var16, var13, par9, 1.0F, 1.0F, 1.0F);
+                        }
                     }
                 }
                 else
@@ -143,7 +151,6 @@ public class RenderItem extends Render
                     {
                         GL11.glScalef(0.5128205F, 0.5128205F, 0.5128205F);
                         GL11.glTranslatef(0.0F, -0.05F, 0.0F);
-                        GL11.glDisable(GL11.GL_LIGHTING);
                     }
                     else
                     {
@@ -168,10 +175,12 @@ public class RenderItem extends Render
                         var24 = (float)(var16 >> 8 & 255) / 255.0F;
                         var19 = (float)(var16 & 255) / 255.0F;
                         var20 = 1.0F;
-                        GL11.glColor4f(var17 * var20, var24 * var20, var19 * var20, 1.0F);
+                        this.func_77020_a(par1EntityItem, var15, var13, par9, var17 * var20, var24 * var20, var19 * var20);
                     }
-
-                    this.func_77020_a(var15, var13);
+                    else
+                    {
+                        this.func_77020_a(par1EntityItem, var15, var13, par9, 1.0F, 1.0F, 1.0F);
+                    }
                 }
             }
 
@@ -180,38 +189,135 @@ public class RenderItem extends Render
         }
     }
 
-    private void func_77020_a(int par1, int par2)
+    private void func_77020_a(EntityItem par1EntityItem, int par2, int par3, float par4, float par5, float par6, float par7)
     {
-        Tessellator var3 = Tessellator.instance;
-        float var4 = (float)(par1 % 16 * 16 + 0) / 256.0F;
-        float var5 = (float)(par1 % 16 * 16 + 16) / 256.0F;
-        float var6 = (float)(par1 / 16 * 16 + 0) / 256.0F;
-        float var7 = (float)(par1 / 16 * 16 + 16) / 256.0F;
-        float var8 = 1.0F;
-        float var9 = 0.5F;
-        float var10 = 0.25F;
+        Tessellator var8 = Tessellator.instance;
+        float var9 = (float)(par2 % 16 * 16 + 0) / 256.0F;
+        float var10 = (float)(par2 % 16 * 16 + 16) / 256.0F;
+        float var11 = (float)(par2 / 16 * 16 + 0) / 256.0F;
+        float var12 = (float)(par2 / 16 * 16 + 16) / 256.0F;
+        float var13 = 1.0F;
+        float var14 = 0.5F;
+        float var15 = 0.25F;
+        float var17;
 
-        for (int var11 = 0; var11 < par2; ++var11)
+        if (this.renderManager.options.fancyGraphics)
         {
             GL11.glPushMatrix();
 
-            if (var11 > 0)
+            if (field_82407_g)
             {
-                float var12 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-                float var13 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-                float var14 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
-                GL11.glTranslatef(var12, var13, var14);
+                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+            }
+            else
+            {
+                GL11.glRotatef((((float)par1EntityItem.age + par4) / 20.0F + par1EntityItem.hoverStart) * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
             }
 
-            GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-            var3.startDrawingQuads();
-            var3.setNormal(0.0F, 1.0F, 0.0F);
-            var3.addVertexWithUV((double)(0.0F - var9), (double)(0.0F - var10), 0.0D, (double)var4, (double)var7);
-            var3.addVertexWithUV((double)(var8 - var9), (double)(0.0F - var10), 0.0D, (double)var5, (double)var7);
-            var3.addVertexWithUV((double)(var8 - var9), (double)(1.0F - var10), 0.0D, (double)var5, (double)var6);
-            var3.addVertexWithUV((double)(0.0F - var9), (double)(1.0F - var10), 0.0D, (double)var4, (double)var6);
-            var3.draw();
+            float var16 = 0.0625F;
+            var17 = 0.021875F;
+            ItemStack var18 = par1EntityItem.func_92059_d();
+            int var19 = var18.stackSize;
+            byte var24;
+
+            if (var19 < 2)
+            {
+                var24 = 1;
+            }
+            else if (var19 < 16)
+            {
+                var24 = 2;
+            }
+            else if (var19 < 32)
+            {
+                var24 = 3;
+            }
+            else
+            {
+                var24 = 4;
+            }
+
+            GL11.glTranslatef(-var14, -var15, -((var16 + var17) * (float)var24 / 2.0F));
+
+            for (int var20 = 0; var20 < var24; ++var20)
+            {
+                GL11.glTranslatef(0.0F, 0.0F, var16 + var17);
+
+                if (Block.blocksList[var18.itemID] != null)
+                {
+                    this.loadTexture("/terrain.png");
+                }
+                else
+                {
+                    this.loadTexture("/gui/items.png");
+                }
+
+                GL11.glColor4f(par5, par6, par7, 1.0F);
+                ItemRenderer.renderItemIn2D(var8, var10, var11, var9, var12, var16);
+
+                if (var18 != null && var18.hasEffect())
+                {
+                    GL11.glDepthFunc(GL11.GL_EQUAL);
+                    GL11.glDisable(GL11.GL_LIGHTING);
+                    this.renderManager.renderEngine.bindTexture(this.renderManager.renderEngine.getTexture("%blur%/misc/glint.png"));
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+                    float var21 = 0.76F;
+                    GL11.glColor4f(0.5F * var21, 0.25F * var21, 0.8F * var21, 1.0F);
+                    GL11.glMatrixMode(GL11.GL_TEXTURE);
+                    GL11.glPushMatrix();
+                    float var22 = 0.125F;
+                    GL11.glScalef(var22, var22, var22);
+                    float var23 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F * 8.0F;
+                    GL11.glTranslatef(var23, 0.0F, 0.0F);
+                    GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
+                    ItemRenderer.renderItemIn2D(var8, 0.0F, 0.0F, 1.0F, 1.0F, var16);
+                    GL11.glPopMatrix();
+                    GL11.glPushMatrix();
+                    GL11.glScalef(var22, var22, var22);
+                    var23 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F * 8.0F;
+                    GL11.glTranslatef(-var23, 0.0F, 0.0F);
+                    GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
+                    ItemRenderer.renderItemIn2D(var8, 0.0F, 0.0F, 1.0F, 1.0F, 0.0625F);
+                    GL11.glPopMatrix();
+                    GL11.glMatrixMode(GL11.GL_MODELVIEW);
+                    GL11.glDisable(GL11.GL_BLEND);
+                    GL11.glEnable(GL11.GL_LIGHTING);
+                    GL11.glDepthFunc(GL11.GL_LEQUAL);
+                }
+            }
+
             GL11.glPopMatrix();
+        }
+        else
+        {
+            for (int var25 = 0; var25 < par3; ++var25)
+            {
+                GL11.glPushMatrix();
+
+                if (var25 > 0)
+                {
+                    var17 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
+                    float var27 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
+                    float var26 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
+                    GL11.glTranslatef(var17, var27, var26);
+                }
+
+                if (!field_82407_g)
+                {
+                    GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+                }
+
+                GL11.glColor4f(par5, par6, par7, 1.0F);
+                var8.startDrawingQuads();
+                var8.setNormal(0.0F, 1.0F, 0.0F);
+                var8.addVertexWithUV((double)(0.0F - var14), (double)(0.0F - var15), 0.0D, (double)var9, (double)var12);
+                var8.addVertexWithUV((double)(var13 - var14), (double)(0.0F - var15), 0.0D, (double)var10, (double)var12);
+                var8.addVertexWithUV((double)(var13 - var14), (double)(1.0F - var15), 0.0D, (double)var10, (double)var11);
+                var8.addVertexWithUV((double)(0.0F - var14), (double)(1.0F - var15), 0.0D, (double)var9, (double)var11);
+                var8.draw();
+                GL11.glPopMatrix();
+            }
         }
     }
 

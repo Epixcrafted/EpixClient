@@ -44,6 +44,8 @@ public abstract class GuiContainer extends GuiScreen
 
     /** Used when touchscreen is enabled */
     private ItemStack returningStack = null;
+    private Slot field_92033_y = null;
+    private long field_92032_z = 0L;
 
     public GuiContainer(Container par1Container)
     {
@@ -85,7 +87,6 @@ public abstract class GuiContainer extends GuiScreen
         short var7 = 240;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var6 / 1.0F, (float)var7 / 1.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int var8;
         int var9;
 
         for (int var13 = 0; var13 < this.inventorySlots.inventorySlots.size(); ++var13)
@@ -98,7 +99,7 @@ public abstract class GuiContainer extends GuiScreen
                 this.theSlot = var14;
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                var8 = var14.xDisplayPosition;
+                int var8 = var14.xDisplayPosition;
                 var9 = var14.yDisplayPosition;
                 this.drawGradientRect(var8, var9, var8 + 16, var9 + 16, -2130706433, -2130706433);
                 GL11.glEnable(GL11.GL_LIGHTING);
@@ -112,7 +113,8 @@ public abstract class GuiContainer extends GuiScreen
 
         if (var16 != null)
         {
-            var8 = this.draggedStack == null ? 8 : 0;
+            byte var18 = 8;
+            var9 = this.draggedStack == null ? 8 : 16;
 
             if (this.draggedStack != null && this.field_90018_r)
             {
@@ -120,7 +122,7 @@ public abstract class GuiContainer extends GuiScreen
                 var16.stackSize = MathHelper.ceiling_float_int((float)var16.stackSize / 2.0F);
             }
 
-            this.drawItemStack(var16, par1 - var4 - var8, par2 - var5 - var8);
+            this.drawItemStack(var16, par1 - var4 - var18, par2 - var5 - var9);
         }
 
         if (this.returningStack != null)
@@ -142,8 +144,8 @@ public abstract class GuiContainer extends GuiScreen
 
         if (var15.getItemStack() == null && this.theSlot != null && this.theSlot.getHasStack())
         {
-            ItemStack var18 = this.theSlot.getStack();
-            this.drawItemStackTooltip(var18, par1 - var4 + 8, par2 - var5 + 8);
+            ItemStack var19 = this.theSlot.getStack();
+            this.drawItemStackTooltip(var19, par1 - var4 + 8, par2 - var5 + 8);
         }
 
         GL11.glPopMatrix();
@@ -158,7 +160,7 @@ public abstract class GuiContainer extends GuiScreen
         this.zLevel = 200.0F;
         itemRenderer.zLevel = 200.0F;
         itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3);
-        itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3);
+        itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8));
         this.zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
     }
@@ -194,6 +196,11 @@ public abstract class GuiContainer extends GuiScreen
             if (var4.size() > 1)
             {
                 var9 += 2 + (var4.size() - 1) * 10;
+            }
+
+            if (this.guiTop + var7 + var9 + 6 > this.height)
+            {
+                var7 = this.height - var9 - this.guiTop - 6;
             }
 
             this.zLevel = 300.0F;
@@ -410,15 +417,39 @@ public abstract class GuiContainer extends GuiScreen
 
     protected void func_85041_a(int par1, int par2, int par3, long par4)
     {
-        if (this.clickedSlot != null && this.mc.gameSettings.touchscreen && this.draggedStack == null)
+        if (this.clickedSlot != null && this.mc.gameSettings.touchscreen)
         {
             if (par3 == 0 || par3 == 1)
             {
                 Slot var6 = this.getSlotAtPosition(par1, par2);
 
-                if (var6 != this.clickedSlot)
+                if (this.draggedStack == null)
                 {
-                    this.draggedStack = this.clickedSlot.getStack();
+                    if (var6 != this.clickedSlot)
+                    {
+                        this.draggedStack = this.clickedSlot.getStack().copy();
+                    }
+                }
+                else if (this.draggedStack.stackSize > 1 && var6 != null && this.func_92031_b(var6))
+                {
+                    long var7 = Minecraft.getSystemTime();
+
+                    if (this.field_92033_y == var6)
+                    {
+                        if (var7 - this.field_92032_z > 500L)
+                        {
+                            this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, 0, 0);
+                            this.handleMouseClick(var6, var6.slotNumber, 1, 0);
+                            this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, 0, 0);
+                            this.field_92032_z = var7 + 750L;
+                            --this.draggedStack.stackSize;
+                        }
+                    }
+                    else
+                    {
+                        this.field_92033_y = var6;
+                        this.field_92032_z = var7;
+                    }
                 }
             }
         }
@@ -455,12 +486,7 @@ public abstract class GuiContainer extends GuiScreen
                     this.draggedStack = this.clickedSlot.getStack();
                 }
 
-                boolean var9 = var4 == null || !var4.getHasStack();
-
-                if (var4 != null && var4.getHasStack() && this.draggedStack != null && ItemStack.areItemStackTagsEqual(var4.getStack(), this.draggedStack))
-                {
-                    var9 |= var4.getStack().stackSize + this.draggedStack.stackSize <= this.draggedStack.getMaxStackSize();
-                }
+                boolean var9 = this.func_92031_b(var4);
 
                 if (var8 != -1 && this.draggedStack != null && var9)
                 {
@@ -494,6 +520,18 @@ public abstract class GuiContainer extends GuiScreen
                 this.clickedSlot = null;
             }
         }
+    }
+
+    private boolean func_92031_b(Slot par1Slot)
+    {
+        boolean var2 = par1Slot == null || !par1Slot.getHasStack();
+
+        if (par1Slot != null && par1Slot.getHasStack() && this.draggedStack != null && ItemStack.areItemStackTagsEqual(par1Slot.getStack(), this.draggedStack))
+        {
+            var2 |= par1Slot.getStack().stackSize + this.draggedStack.stackSize <= this.draggedStack.getMaxStackSize();
+        }
+
+        return var2;
     }
 
     /**

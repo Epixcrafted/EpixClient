@@ -182,6 +182,7 @@ public class EntityList
         addMapping(EntityWitherSkull.class, "WitherSkull", 19);
         addMapping(EntityTNTPrimed.class, "PrimedTnt", 20);
         addMapping(EntityFallingSand.class, "FallingSand", 21);
+        addMapping(EntityFireworkRocket.class, "FireworksRocketEntity", 22);
         addMapping(EntityMinecart.class, "Minecart", 40);
         addMapping(EntityBoat.class, "Boat", 41);
         addMapping(EntityLiving.class, "Mob", 48);

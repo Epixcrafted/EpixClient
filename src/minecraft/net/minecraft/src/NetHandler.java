@@ -80,11 +80,6 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet29DestroyEntity);
     }
 
-    public void handlePickupSpawn(Packet21PickupSpawn par1Packet21PickupSpawn)
-    {
-        this.unexpectedPacket(par1Packet21PickupSpawn);
-    }
-
     public void handleCollect(Packet22Collect par1Packet22Collect)
     {
         this.unexpectedPacket(par1Packet22Collect);

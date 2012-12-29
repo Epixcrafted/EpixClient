@@ -1,12 +1,14 @@
 package net.minecraft.src;
 
-public abstract class GuiConfirmOpenLink extends GuiYesNo
+public class GuiConfirmOpenLink extends GuiYesNo
 {
     /** Text to warn players from opening unsafe links. */
     private String openLinkWarning;
 
     /** Label for the Copy to Clipboard button. */
     private String copyLinkButtonText;
+    private String field_92028_p;
+    private boolean field_92027_q = true;
 
     public GuiConfirmOpenLink(GuiScreen par1GuiScreen, String par2Str, int par3)
     {
@@ -16,6 +18,7 @@ public abstract class GuiConfirmOpenLink extends GuiYesNo
         this.buttonText2 = var4.translateKey("gui.no");
         this.copyLinkButtonText = var4.translateKey("chat.copy");
         this.openLinkWarning = var4.translateKey("chat.link.warning");
+        this.field_92028_p = par2Str;
     }
 
     /**
@@ -36,18 +39,18 @@ public abstract class GuiConfirmOpenLink extends GuiYesNo
         if (par1GuiButton.id == 2)
         {
             this.copyLinkToClipboard();
-            super.actionPerformed((GuiButton)this.controlList.get(1));
         }
-        else
-        {
-            super.actionPerformed(par1GuiButton);
-        }
+
+        this.parentScreen.confirmClicked(par1GuiButton.id == 0, this.worldNumber);
     }
 
     /**
      * Copies the link to the system clipboard.
      */
-    public abstract void copyLinkToClipboard();
+    public void copyLinkToClipboard()
+    {
+        setClipboardString(this.field_92028_p);
+    }
 
     /**
      * Draws the screen and all the components in it.
@@ -55,6 +58,15 @@ public abstract class GuiConfirmOpenLink extends GuiYesNo
     public void drawScreen(int par1, int par2, float par3)
     {
         super.drawScreen(par1, par2, par3);
-        this.drawCenteredString(this.fontRenderer, this.openLinkWarning, this.width / 2, 110, 16764108);
+
+        if (this.field_92027_q)
+        {
+            this.drawCenteredString(this.fontRenderer, this.openLinkWarning, this.width / 2, 110, 16764108);
+        }
+    }
+
+    public void func_92026_h()
+    {
+        this.field_92027_q = false;
     }
 }

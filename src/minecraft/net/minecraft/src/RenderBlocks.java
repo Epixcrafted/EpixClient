@@ -5281,7 +5281,7 @@ public class RenderBlocks
     {
         float var5 = 0.1875F;
         this.setOverrideBlockTexture(Block.obsidian.blockIndexInTexture);
-        this.setRenderMinMax(0.125D, 0.0D, 0.125D, 0.875D, (double)var5, 0.875D);
+        this.setRenderMinMax(0.125D, 0.0062500000931322575D, 0.125D, 0.875D, (double)var5, 0.875D);
         this.renderStandardBlock(par1BlockBeacon, par2, par3, par4);
         this.setOverrideBlockTexture(Block.glass.blockIndexInTexture);
         this.setRenderMinMax(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);

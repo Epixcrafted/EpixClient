@@ -26,6 +26,8 @@ public class GuiIngame extends Gui
 
     /** Previous frame vignette brightness (slowly changes by 1% each frame) */
     public float prevVignetteBrightness = 1.0F;
+    private int field_92017_k;
+    private ItemStack field_92016_l;
 
     public GuiIngame(Minecraft par1Minecraft)
     {
@@ -353,40 +355,78 @@ public class GuiIngame extends Gui
         }
 
         int var38;
-        int var40;
+        int var37;
 
         if (this.mc.playerController.func_78763_f() && this.mc.thePlayer.experienceLevel > 0)
         {
             this.mc.mcProfiler.startSection("expLevel");
             var11 = false;
             var12 = var11 ? 16777215 : 8453920;
-            String var35 = "" + this.mc.thePlayer.experienceLevel;
-            var40 = (var6 - var8.getStringWidth(var35)) / 2;
-            var38 = var7 - 31 - 4;
-            var8.drawString(var35, var40 + 1, var38, 0);
-            var8.drawString(var35, var40 - 1, var38, 0);
-            var8.drawString(var35, var40, var38 + 1, 0);
-            var8.drawString(var35, var40, var38 - 1, 0);
-            var8.drawString(var35, var40, var38, var12);
+            String var34 = "" + this.mc.thePlayer.experienceLevel;
+            var38 = (var6 - var8.getStringWidth(var34)) / 2;
+            var37 = var7 - 31 - 4;
+            var8.drawString(var34, var38 + 1, var37, 0);
+            var8.drawString(var34, var38 - 1, var37, 0);
+            var8.drawString(var34, var38, var37 + 1, 0);
+            var8.drawString(var34, var38, var37 - 1, 0);
+            var8.drawString(var34, var38, var37, var12);
+            this.mc.mcProfiler.endSection();
+        }
+
+        String var35;
+
+        if (this.mc.gameSettings.field_92117_D)
+        {
+            this.mc.mcProfiler.startSection("toolHighlight");
+
+            if (this.field_92017_k > 0 && this.field_92016_l != null)
+            {
+                var35 = this.field_92016_l.getDisplayName();
+                var12 = (var6 - var8.getStringWidth(var35)) / 2;
+                var13 = var7 - 59;
+
+                if (!this.mc.playerController.shouldDrawHUD())
+                {
+                    var13 += 14;
+                }
+
+                var38 = (int)((float)this.field_92017_k * 256.0F / 10.0F);
+
+                if (var38 > 255)
+                {
+                    var38 = 255;
+                }
+
+                if (var38 > 0)
+                {
+                    GL11.glPushMatrix();
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    var8.drawStringWithShadow(var35, var12, var13, 16777215 + (var38 << 24));
+                    GL11.glDisable(GL11.GL_BLEND);
+                    GL11.glPopMatrix();
+                }
+            }
+
             this.mc.mcProfiler.endSection();
         }
 
         if (this.mc.isDemo())
         {
             this.mc.mcProfiler.startSection("demo");
-            String var36 = "";
+            var35 = "";
 
             if (this.mc.theWorld.getTotalWorldTime() >= 120500L)
             {
-                var36 = StatCollector.translateToLocal("demo.demoExpired");
+                var35 = StatCollector.translateToLocal("demo.demoExpired");
             }
             else
             {
-                var36 = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[] {StringUtils.ticksToElapsedTime((int)(120500L - this.mc.theWorld.getTotalWorldTime()))});
+                var35 = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[] {StringUtils.ticksToElapsedTime((int)(120500L - this.mc.theWorld.getTotalWorldTime()))});
             }
 
-            var12 = var8.getStringWidth(var36);
-            var8.drawStringWithShadow(var36, var6 - var12 - 10, 5, 16777215);
+            var12 = var8.getStringWidth(var35);
+            var8.drawStringWithShadow(var35, var6 - var12 - 10, 5, 16777215);
             this.mc.mcProfiler.endSection();
         }
 
@@ -394,18 +434,18 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            var8.drawStringWithShadow("Minecraft 1.4.5 (" + this.mc.debug + ")", 2, 2, 16777215);
+            var8.drawStringWithShadow("Minecraft 1.4.7 (" + this.mc.debug + ")", 2, 2, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
             var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
             var8.drawStringWithShadow(this.mc.getWorldProviderName(), 2, 42, 16777215);
-            long var41 = Runtime.getRuntime().maxMemory();
-            long var34 = Runtime.getRuntime().totalMemory();
+            long var36 = Runtime.getRuntime().maxMemory();
+            long var40 = Runtime.getRuntime().totalMemory();
             long var42 = Runtime.getRuntime().freeMemory();
-            long var43 = var34 - var42;
-            String var45 = "Used memory: " + var43 * 100L / var41 + "% (" + var43 / 1024L / 1024L + "MB) of " + var41 / 1024L / 1024L + "MB";
+            long var43 = var40 - var42;
+            String var45 = "Used memory: " + var43 * 100L / var36 + "% (" + var43 / 1024L / 1024L + "MB) of " + var36 / 1024L / 1024L + "MB";
             this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 2, 14737632);
-            var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
+            var45 = "Allocated memory: " + var40 * 100L / var36 + "% (" + var40 / 1024L / 1024L + "MB)";
             this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 12, 14737632);
             var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
             var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
@@ -472,31 +512,31 @@ public class GuiIngame extends Gui
         if (this.mc.gameSettings.keyBindPlayerList.pressed && (!this.mc.isIntegratedServerRunning() || this.mc.thePlayer.sendQueue.playerInfoList.size() > 1))
         {
             this.mc.mcProfiler.startSection("playerList");
-            NetClientHandler var37 = this.mc.thePlayer.sendQueue;
-            List var39 = var37.playerInfoList;
-            var13 = var37.currentServerMaxPlayers;
-            var40 = var13;
+            NetClientHandler var41 = this.mc.thePlayer.sendQueue;
+            List var39 = var41.playerInfoList;
+            var13 = var41.currentServerMaxPlayers;
+            var38 = var13;
 
-            for (var38 = 1; var40 > 20; var40 = (var13 + var38 - 1) / var38)
+            for (var37 = 1; var38 > 20; var38 = (var13 + var37 - 1) / var37)
             {
-                ++var38;
+                ++var37;
             }
 
-            var16 = 300 / var38;
+            var16 = 300 / var37;
 
             if (var16 > 150)
             {
                 var16 = 150;
             }
 
-            var17 = (var6 - var38 * var16) / 2;
+            var17 = (var6 - var37 * var16) / 2;
             byte var44 = 10;
-            drawRect(var17 - 1, var44 - 1, var17 + var16 * var38, var44 + 9 * var40, Integer.MIN_VALUE);
+            drawRect(var17 - 1, var44 - 1, var17 + var16 * var37, var44 + 9 * var38, Integer.MIN_VALUE);
 
             for (var19 = 0; var19 < var13; ++var19)
             {
-                var20 = var17 + var19 % var38 * var16;
-                var47 = var44 + var19 / var38 * 9;
+                var20 = var17 + var19 % var37 * var16;
+                var47 = var44 + var19 / var37 * 9;
                 drawRect(var20, var47, var20 + var16 - 1, var47 + 8, 553648127);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -711,6 +751,29 @@ public class GuiIngame extends Gui
         }
 
         ++this.updateCounter;
+
+        if (this.mc.thePlayer != null)
+        {
+            ItemStack var1 = this.mc.thePlayer.inventory.getCurrentItem();
+
+            if (var1 == null)
+            {
+                this.field_92017_k = 0;
+            }
+            else if (this.field_92016_l != null && var1.itemID == this.field_92016_l.itemID && ItemStack.areItemStackTagsEqual(var1, this.field_92016_l) && (var1.isItemStackDamageable() || var1.getItemDamage() == this.field_92016_l.getItemDamage()))
+            {
+                if (this.field_92017_k > 0)
+                {
+                    --this.field_92017_k;
+                }
+            }
+            else
+            {
+                this.field_92017_k = 40;
+            }
+
+            this.field_92016_l = var1;
+        }
     }
 
     public void setRecordPlayingMessage(String par1Str)

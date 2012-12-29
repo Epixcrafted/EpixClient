@@ -183,7 +183,7 @@ public abstract class Entity
 
     /** Whether the entity is inside a Portal */
     protected boolean inPortal;
-    private int field_82153_h;
+    protected int field_82153_h;
 
     /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
@@ -392,7 +392,6 @@ public abstract class Entity
             this.ridingEntity = null;
         }
 
-        ++this.ticksExisted;
         this.prevDistanceWalkedModified = this.distanceWalkedModified;
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -541,6 +540,7 @@ public abstract class Entity
     public void setFire(int par1)
     {
         int var2 = par1 * 20;
+        var2 = EnchantmentProtection.func_92093_a(this, var2);
 
         if (this.fire < var2)
         {
@@ -980,7 +980,7 @@ public abstract class Entity
         }
     }
 
-    protected void func_85030_a(String par1Str, float par2, float par3)
+    public void func_85030_a(String par1Str, float par2, float par3)
     {
         this.worldObj.playSoundAtEntity(this, par1Str, par2, par3);
     }

@@ -12,7 +12,7 @@ public class CallableServerProfiler implements Callable
         this.mcServer = par1MinecraftServer;
     }
 
-    public String func_82554_a()
+    public String func_82551_a()
     {
         int var1 = this.mcServer.worldServers[0].getWorldVec3Pool().getPoolSize();
         int var2 = 56 * var1;
@@ -25,6 +25,6 @@ public class CallableServerProfiler implements Callable
 
     public Object call()
     {
-        return this.func_82554_a();
+        return this.func_82551_a();
     }
 }

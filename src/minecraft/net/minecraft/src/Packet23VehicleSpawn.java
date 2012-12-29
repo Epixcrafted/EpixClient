@@ -32,6 +32,8 @@ public class Packet23VehicleSpawn extends Packet
      * Not sent if the thrower entity ID is 0. The speed of this fireball along the Z axis.
      */
     public int speedZ;
+    public int field_92077_h;
+    public int field_92078_i;
 
     /** The type of object. */
     public int type;
@@ -52,6 +54,8 @@ public class Packet23VehicleSpawn extends Packet
         this.xPosition = MathHelper.floor_double(par1Entity.posX * 32.0D);
         this.yPosition = MathHelper.floor_double(par1Entity.posY * 32.0D);
         this.zPosition = MathHelper.floor_double(par1Entity.posZ * 32.0D);
+        this.field_92077_h = MathHelper.floor_float(par1Entity.rotationPitch * 256.0F / 360.0F);
+        this.field_92078_i = MathHelper.floor_float(par1Entity.rotationYaw * 256.0F / 360.0F);
         this.type = par2;
         this.throwerEntityId = par3;
 
@@ -108,6 +112,8 @@ public class Packet23VehicleSpawn extends Packet
         this.xPosition = par1DataInputStream.readInt();
         this.yPosition = par1DataInputStream.readInt();
         this.zPosition = par1DataInputStream.readInt();
+        this.field_92077_h = par1DataInputStream.readByte();
+        this.field_92078_i = par1DataInputStream.readByte();
         this.throwerEntityId = par1DataInputStream.readInt();
 
         if (this.throwerEntityId > 0)
@@ -128,6 +134,8 @@ public class Packet23VehicleSpawn extends Packet
         par1DataOutputStream.writeInt(this.xPosition);
         par1DataOutputStream.writeInt(this.yPosition);
         par1DataOutputStream.writeInt(this.zPosition);
+        par1DataOutputStream.writeByte(this.field_92077_h);
+        par1DataOutputStream.writeByte(this.field_92078_i);
         par1DataOutputStream.writeInt(this.throwerEntityId);
 
         if (this.throwerEntityId > 0)

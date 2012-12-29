@@ -35,7 +35,16 @@ public class MouseHelper
      */
     public void ungrabMouseCursor()
     {
-        Mouse.setCursorPosition(this.windowComponent.getWidth() / 2, this.windowComponent.getHeight() / 2);
+        int var1 = this.windowComponent.getWidth();
+        int var2 = this.windowComponent.getHeight();
+
+        if (this.windowComponent.getParent() != null)
+        {
+            var1 = this.windowComponent.getParent().getWidth();
+            var2 = this.windowComponent.getParent().getHeight();
+        }
+
+        Mouse.setCursorPosition(var1 / 2, var2 / 2);
         Mouse.setGrabbed(false);
     }
 

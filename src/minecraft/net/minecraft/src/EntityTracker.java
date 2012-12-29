@@ -80,6 +80,10 @@ public class EntityTracker
         {
             this.addEntityToTracker(par1Entity, 64, 10, true);
         }
+        else if (par1Entity instanceof EntityFireworkRocket)
+        {
+            this.addEntityToTracker(par1Entity, 64, 10, true);
+        }
         else if (par1Entity instanceof EntityItem)
         {
             this.addEntityToTracker(par1Entity, 64, 20, true);

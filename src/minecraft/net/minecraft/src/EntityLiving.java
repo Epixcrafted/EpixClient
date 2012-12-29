@@ -12,16 +12,16 @@ public abstract class EntityLiving extends Entity
      * An array of probabilities that determines whether a random enchantment should be added to the held item. Indexed
      * by difficulty.
      */
-    private static final float[] enchantmentProbability = new float[] {0.0F, 0.0F, 0.005F, 0.01F};
+    private static final float[] enchantmentProbability = new float[] {0.0F, 0.0F, 0.05F, 0.1F};
 
     /** Probability to get enchanted armor */
-    private static final float[] armorEnchantmentProbability = new float[] {0.0F, 0.0F, 0.05F, 0.1F};
+    private static final float[] armorEnchantmentProbability = new float[] {0.0F, 0.0F, 0.05F, 0.2F};
 
     /** Probability to get armor */
-    private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.005F, 0.02F};
+    private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.05F, 0.02F};
 
     /** Probability to pick up loot */
-    public static final float[] pickUpLootProability = new float[] {0.0F, 0.01F, 0.07F, 0.2F};
+    public static final float[] pickUpLootProability = new float[] {0.0F, 0.1F, 0.15F, 0.45F};
     public int maxHurtResistantTime = 20;
     public float field_70769_ao;
     public float field_70770_ap;
@@ -534,7 +534,9 @@ public abstract class EntityLiving extends Entity
             this.extinguish();
         }
 
-        if (this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.activePotionsMap.containsKey(Integer.valueOf(Potion.waterBreathing.id)))
+        boolean var1 = this instanceof EntityPlayer && ((EntityPlayer)this).capabilities.disableDamage;
+
+        if (this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.activePotionsMap.containsKey(Integer.valueOf(Potion.waterBreathing.id)) && !var1)
         {
             this.setAir(this.decreaseAirSupply(this.getAir()));
 
@@ -542,12 +544,12 @@ public abstract class EntityLiving extends Entity
             {
                 this.setAir(0);
 
-                for (int var1 = 0; var1 < 8; ++var1)
+                for (int var2 = 0; var2 < 8; ++var2)
                 {
-                    float var2 = this.rand.nextFloat() - this.rand.nextFloat();
                     float var3 = this.rand.nextFloat() - this.rand.nextFloat();
                     float var4 = this.rand.nextFloat() - this.rand.nextFloat();
-                    this.worldObj.spawnParticle("bubble", this.posX + (double)var2, this.posY + (double)var3, this.posZ + (double)var4, this.motionX, this.motionY, this.motionZ);
+                    float var5 = this.rand.nextFloat() - this.rand.nextFloat();
+                    this.worldObj.spawnParticle("bubble", this.posX + (double)var3, this.posY + (double)var4, this.posZ + (double)var5, this.motionX, this.motionY, this.motionZ);
                 }
 
                 this.attackEntityFrom(DamageSource.drown, 2);
@@ -670,7 +672,25 @@ public abstract class EntityLiving extends Entity
      */
     protected int getExperiencePoints(EntityPlayer par1EntityPlayer)
     {
-        return this.experienceValue;
+        if (this.experienceValue > 0)
+        {
+            int var2 = this.experienceValue;
+            ItemStack[] var3 = this.getLastActiveItems();
+
+            for (int var4 = 0; var4 < var3.length; ++var4)
+            {
+                if (var3[var4] != null && this.equipmentDropChances[var4] <= 1.0F)
+                {
+                    var2 += 1 + this.rand.nextInt(3);
+                }
+            }
+
+            return var2;
+        }
+        else
+        {
+            return this.experienceValue;
+        }
     }
 
     /**
@@ -936,7 +956,8 @@ public abstract class EntityLiving extends Entity
             {
                 if ((par1DamageSource == DamageSource.anvil || par1DamageSource == DamageSource.fallingBlock) && this.getCurrentItemOrArmor(4) != null)
                 {
-                    par2 = (int)((float)par2 * 0.55F);
+                    this.getCurrentItemOrArmor(4).damageItem(par2 * 4 + this.rand.nextInt(par2 * 2), this);
+                    par2 = (int)((float)par2 * 0.75F);
                 }
 
                 this.legYaw = 1.5F;
@@ -1626,6 +1647,12 @@ public abstract class EntityLiving extends Entity
             this.setPosition(var1, var3, var5);
             this.setRotation(this.rotationYaw, this.rotationPitch);
         }
+        else if (!this.isClientWorld())
+        {
+            this.motionX *= 0.98D;
+            this.motionY *= 0.98D;
+            this.motionZ *= 0.98D;
+        }
 
         if (Math.abs(this.motionX) < 0.005D)
         {
@@ -1720,9 +1747,9 @@ public abstract class EntityLiving extends Entity
             {
                 EntityItem var4 = (EntityItem)var12.next();
 
-                if (!var4.isDead && var4.item != null)
+                if (!var4.isDead && var4.func_92059_d() != null)
                 {
-                    ItemStack var13 = var4.item;
+                    ItemStack var13 = var4.func_92059_d();
                     int var6 = func_82159_b(var13);
 
                     if (var6 > -1)
@@ -2597,17 +2624,17 @@ public abstract class EntityLiving extends Entity
             int var1 = this.rand.nextInt(2);
             float var2 = this.worldObj.difficultySetting == 3 ? 0.1F : 0.25F;
 
-            if (this.rand.nextFloat() < 0.07F)
+            if (this.rand.nextFloat() < 0.1F)
             {
                 ++var1;
             }
 
-            if (this.rand.nextFloat() < 0.07F)
+            if (this.rand.nextFloat() < 0.1F)
             {
                 ++var1;
             }
 
-            if (this.rand.nextFloat() < 0.07F)
+            if (this.rand.nextFloat() < 0.1F)
             {
                 ++var1;
             }
@@ -2794,7 +2821,7 @@ public abstract class EntityLiving extends Entity
     {
         if (this.getHeldItem() != null && this.rand.nextFloat() < enchantmentProbability[this.worldObj.difficultySetting])
         {
-            EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), 5);
+            EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), 5 + this.worldObj.difficultySetting * this.rand.nextInt(6));
         }
 
         for (int var1 = 0; var1 < 4; ++var1)
@@ -2803,7 +2830,7 @@ public abstract class EntityLiving extends Entity
 
             if (var2 != null && this.rand.nextFloat() < armorEnchantmentProbability[this.worldObj.difficultySetting])
             {
-                EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
+                EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5 + this.worldObj.difficultySetting * this.rand.nextInt(6));
             }
         }
     }

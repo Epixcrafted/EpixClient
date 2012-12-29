@@ -107,7 +107,7 @@ public class ChunkProviderFlat implements IChunkProvider
 
             if (var6 == null)
             {
-                var6 = new ExtendedBlockStorage(var4);
+                var6 = new ExtendedBlockStorage(var4, !this.worldObj.provider.hasNoSky);
                 var3.getBlockStorageArray()[var5] = var6;
             }
 

@@ -61,7 +61,7 @@ public class EnchantmentDamage extends Enchantment
      */
     public int calcModifierLiving(int par1, EntityLiving par2EntityLiving)
     {
-        return this.damageType == 0 ? par1 * 3 : (this.damageType == 1 && par2EntityLiving.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD ? par1 * 4 : (this.damageType == 2 && par2EntityLiving.getCreatureAttribute() == EnumCreatureAttribute.ARTHROPOD ? par1 * 4 : 0));
+        return this.damageType == 0 ? MathHelper.floor_float((float)par1 * 2.75F) : (this.damageType == 1 && par2EntityLiving.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD ? MathHelper.floor_float((float)par1 * 4.5F) : (this.damageType == 2 && par2EntityLiving.getCreatureAttribute() == EnumCreatureAttribute.ARTHROPOD ? MathHelper.floor_float((float)par1 * 4.5F) : 0));
     }
 
     /**
@@ -78,5 +78,10 @@ public class EnchantmentDamage extends Enchantment
     public boolean canApplyTogether(Enchantment par1Enchantment)
     {
         return !(par1Enchantment instanceof EnchantmentDamage);
+    }
+
+    public boolean func_92089_a(ItemStack par1ItemStack)
+    {
+        return par1ItemStack.getItem() instanceof ItemAxe ? true : super.func_92089_a(par1ItemStack);
     }
 }

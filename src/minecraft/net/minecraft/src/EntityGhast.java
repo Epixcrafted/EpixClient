@@ -12,6 +12,7 @@ public class EntityGhast extends EntityFlying implements IMob
     private int aggroCooldown = 0;
     public int prevAttackCounter = 0;
     public int attackCounter = 0;
+    private int field_92014_j = 1;
 
     public EntityGhast(World par1World)
     {
@@ -141,6 +142,7 @@ public class EntityGhast extends EntityFlying implements IMob
                 {
                     this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
                     EntityLargeFireball var17 = new EntityLargeFireball(this.worldObj, this, var11, var13, var15);
+                    var17.field_92057_e = this.field_92014_j;
                     double var18 = 4.0D;
                     Vec3 var20 = this.getLook(1.0F);
                     var17.posX = this.posX + var20.xCoord * var18;
@@ -275,5 +277,27 @@ public class EntityGhast extends EntityFlying implements IMob
     public int getMaxSpawnedInChunk()
     {
         return 1;
+    }
+
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setInteger("ExplosionPower", this.field_92014_j);
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readEntityFromNBT(par1NBTTagCompound);
+
+        if (par1NBTTagCompound.hasKey("ExplosionPower"))
+        {
+            this.field_92014_j = par1NBTTagCompound.getInteger("ExplosionPower");
+        }
     }
 }

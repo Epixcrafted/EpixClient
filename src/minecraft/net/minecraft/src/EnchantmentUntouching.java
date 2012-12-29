@@ -39,4 +39,9 @@ public class EnchantmentUntouching extends Enchantment
     {
         return super.canApplyTogether(par1Enchantment) && par1Enchantment.effectId != fortune.effectId;
     }
+
+    public boolean func_92089_a(ItemStack par1ItemStack)
+    {
+        return par1ItemStack.getItem().shiftedIndex == Item.shears.shiftedIndex ? true : super.func_92089_a(par1ItemStack);
+    }
 }

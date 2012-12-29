@@ -777,5 +777,7 @@ public class InventoryPlayer implements IInventory
         {
             this.armorInventory[var2] = ItemStack.copyItemStack(par1InventoryPlayer.armorInventory[var2]);
         }
+
+        this.currentItem = par1InventoryPlayer.currentItem;
     }
 }

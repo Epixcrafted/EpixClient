@@ -145,9 +145,10 @@ public class EntityClientPlayerMP extends EntityPlayerSP
     /**
      * Called when player presses the drop item key
      */
-    public EntityItem dropOneItem()
+    public EntityItem dropOneItem(boolean par1)
     {
-        this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
+        int var2 = par1 ? 3 : 4;
+        this.sendQueue.addToSendQueue(new Packet14BlockDig(var2, 0, 0, 0, 0));
         return null;
     }
 
@@ -196,6 +197,11 @@ public class EntityClientPlayerMP extends EntityPlayerSP
     public void closeScreen()
     {
         this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.openContainer.windowId));
+        this.func_92015_f();
+    }
+
+    public void func_92015_f()
+    {
         this.inventory.setItemStack((ItemStack)null);
         super.closeScreen();
     }

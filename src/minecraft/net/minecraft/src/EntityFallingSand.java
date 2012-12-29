@@ -23,7 +23,7 @@ public class EntityFallingSand extends Entity
         this.shouldDropItem = true;
         this.isBreakingAnvil = false;
         this.isAnvil = false;
-        this.field_82156_g = 20;
+        this.field_82156_g = 40;
         this.field_82158_h = 2.0F;
     }
 
@@ -39,7 +39,7 @@ public class EntityFallingSand extends Entity
         this.shouldDropItem = true;
         this.isBreakingAnvil = false;
         this.isAnvil = false;
-        this.field_82156_g = 20;
+        this.field_82156_g = 40;
         this.field_82158_h = 2.0F;
         this.blockID = par8;
         this.metadata = par9;
@@ -103,14 +103,13 @@ public class EntityFallingSand extends Entity
 
                 if (this.fallTime == 1)
                 {
-                    if (this.fallTime == 1 && this.worldObj.getBlockId(var1, var2, var3) == this.blockID)
-                    {
-                        this.worldObj.setBlockWithNotify(var1, var2, var3, 0);
-                    }
-                    else
+                    if (this.fallTime != 1 || this.worldObj.getBlockId(var1, var2, var3) != this.blockID)
                     {
                         this.setDead();
+                        return;
                     }
+
+                    this.worldObj.setBlockWithNotify(var1, var2, var3, 0);
                 }
 
                 if (this.onGround)
@@ -255,5 +254,12 @@ public class EntityFallingSand extends Entity
     public boolean canRenderOnFire()
     {
         return false;
+    }
+
+    public void func_85029_a(CrashReportCategory par1CrashReportCategory)
+    {
+        super.func_85029_a(par1CrashReportCategory);
+        par1CrashReportCategory.addCrashSection("Immitating block ID", Integer.valueOf(this.blockID));
+        par1CrashReportCategory.addCrashSection("Immitating block data", Integer.valueOf(this.metadata));
     }
 }

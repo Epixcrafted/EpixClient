@@ -122,6 +122,10 @@ public class FlatGeneratorInfo
                 }
             }
         }
+        else
+        {
+            var1.append(";");
+        }
 
         return var1.toString();
     }

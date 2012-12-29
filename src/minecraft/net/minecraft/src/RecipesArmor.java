@@ -22,7 +22,7 @@ public class RecipesArmor
             for (int var4 = 0; var4 < this.recipeItems.length - 1; ++var4)
             {
                 Item var5 = (Item)this.recipeItems[var4 + 1][var2];
-                par1CraftingManager.addRecipe(new ItemStack(var5), new Object[] {this.recipePatterns[var4], 'X', var3});
+                par1CraftingManager.func_92103_a(new ItemStack(var5), new Object[] {this.recipePatterns[var4], 'X', var3});
             }
         }
     }

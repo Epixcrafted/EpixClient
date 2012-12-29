@@ -32,7 +32,7 @@ public class CommandEnchant extends CommandBase
         else
         {
             EntityPlayerMP var3 = func_82359_c(par1ICommandSender, par2ArrayOfStr[0]);
-            int var4 = parseIntBounded(par1ICommandSender, par2ArrayOfStr[1], 1, Enchantment.enchantmentsList.length - 1);
+            int var4 = parseIntBounded(par1ICommandSender, par2ArrayOfStr[1], 0, Enchantment.enchantmentsList.length - 1);
             int var5 = 1;
             ItemStack var6 = var3.getCurrentEquippedItem();
 
@@ -48,7 +48,7 @@ public class CommandEnchant extends CommandBase
                 {
                     throw new NumberInvalidException("commands.enchant.notFound", new Object[] {Integer.valueOf(var4)});
                 }
-                else if (!var7.type.canEnchantItem(var6.getItem()))
+                else if (!var7.func_92089_a(var6))
                 {
                     notifyAdmins(par1ICommandSender, "commands.enchant.cantEnchant", new Object[0]);
                 }

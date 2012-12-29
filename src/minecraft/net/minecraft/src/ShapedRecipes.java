@@ -16,6 +16,7 @@ public class ShapedRecipes implements IRecipe
 
     /** Is the itemID of the output item that you get when craft the recipe. */
     public final int recipeOutputItemID;
+    private boolean field_92101_f = false;
 
     public ShapedRecipes(int par1, int par2, ItemStack[] par3ArrayOfItemStack, ItemStack par4ItemStack)
     {
@@ -110,7 +111,22 @@ public class ShapedRecipes implements IRecipe
      */
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
-        return this.getRecipeOutput().copy();
+        ItemStack var2 = this.getRecipeOutput().copy();
+
+        if (this.field_92101_f)
+        {
+            for (int var3 = 0; var3 < par1InventoryCrafting.getSizeInventory(); ++var3)
+            {
+                ItemStack var4 = par1InventoryCrafting.getStackInSlot(var3);
+
+                if (var4 != null && var4.hasTagCompound())
+                {
+                    var2.setTagCompound((NBTTagCompound)var4.stackTagCompound.copy());
+                }
+            }
+        }
+
+        return var2;
     }
 
     /**
@@ -119,5 +135,11 @@ public class ShapedRecipes implements IRecipe
     public int getRecipeSize()
     {
         return this.recipeWidth * this.recipeHeight;
+    }
+
+    public ShapedRecipes func_92100_c()
+    {
+        this.field_92101_f = true;
+        return this;
     }
 }

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Calendar;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -10,6 +11,17 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
     /** The large double chest model. */
     private ModelChest largeChestModel = new ModelLargeChest();
+    private boolean field_92061_d;
+
+    public TileEntityChestRenderer()
+    {
+        Calendar var1 = Calendar.getInstance();
+
+        if (var1.get(2) + 1 == 12 && var1.get(5) >= 24 && var1.get(5) <= 26)
+        {
+            this.field_92061_d = true;
+        }
+    }
 
     /**
      * Renders the TileEntity for the chest at a position.
@@ -43,12 +55,28 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
             if (par1TileEntityChest.adjacentChestXPos == null && par1TileEntityChest.adjacentChestZPosition == null)
             {
                 var14 = this.chestModel;
-                this.bindTextureByName("/item/chest.png");
+
+                if (this.field_92061_d)
+                {
+                    this.bindTextureByName("/item/xmaschest.png");
+                }
+                else
+                {
+                    this.bindTextureByName("/item/chest.png");
+                }
             }
             else
             {
                 var14 = this.largeChestModel;
-                this.bindTextureByName("/item/largechest.png");
+
+                if (this.field_92061_d)
+                {
+                    this.bindTextureByName("/item/largexmaschest.png");
+                }
+                else
+                {
+                    this.bindTextureByName("/item/largechest.png");
+                }
             }
 
             GL11.glPushMatrix();

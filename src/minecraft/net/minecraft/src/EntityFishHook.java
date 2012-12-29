@@ -470,7 +470,7 @@ public class EntityFishHook extends Entity
                 var13.motionZ = var7 * var11;
                 this.worldObj.spawnEntityInWorld(var13);
                 this.angler.addStat(StatList.fishCaughtStat, 1);
-                this.angler.worldObj.spawnEntityInWorld(new EntityXPOrb(this.angler.worldObj, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(3) + 1));
+                this.angler.worldObj.spawnEntityInWorld(new EntityXPOrb(this.angler.worldObj, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(6) + 1));
                 var1 = 1;
             }
 

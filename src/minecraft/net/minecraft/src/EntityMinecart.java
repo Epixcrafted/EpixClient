@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.List;
+import net.minecraft.server.MinecraftServer;
 
 public class EntityMinecart extends Entity implements IInventory
 {
@@ -237,7 +238,7 @@ public class EntityMinecart extends Entity implements IInventory
 
                         if (var2.hasTagCompound())
                         {
-                            var7.item.setTagCompound((NBTTagCompound)var2.getTagCompound().copy());
+                            var7.func_92059_d().setTagCompound((NBTTagCompound)var2.getTagCompound().copy());
                         }
 
                         float var8 = 0.05F;
@@ -297,18 +298,72 @@ public class EntityMinecart extends Entity implements IInventory
             this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + 0.8D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
 
+        int var2;
+
+        if (!this.worldObj.isRemote && this.worldObj instanceof WorldServer)
+        {
+            this.worldObj.theProfiler.startSection("portal");
+            MinecraftServer var1 = ((WorldServer)this.worldObj).getMinecraftServer();
+            var2 = this.getMaxInPortalTime();
+
+            if (this.inPortal)
+            {
+                if (var1.getAllowNether())
+                {
+                    if (this.ridingEntity == null && this.field_82153_h++ >= var2)
+                    {
+                        this.field_82153_h = var2;
+                        this.timeUntilPortal = this.getPortalCooldown();
+                        byte var3;
+
+                        if (this.worldObj.provider.dimensionId == -1)
+                        {
+                            var3 = 0;
+                        }
+                        else
+                        {
+                            var3 = -1;
+                        }
+
+                        this.travelToDimension(var3);
+                    }
+
+                    this.inPortal = false;
+                }
+            }
+            else
+            {
+                if (this.field_82153_h > 0)
+                {
+                    this.field_82153_h -= 4;
+                }
+
+                if (this.field_82153_h < 0)
+                {
+                    this.field_82153_h = 0;
+                }
+            }
+
+            if (this.timeUntilPortal > 0)
+            {
+                --this.timeUntilPortal;
+            }
+
+            this.worldObj.theProfiler.endSection();
+        }
+
         if (this.worldObj.isRemote)
         {
             if (this.turnProgress > 0)
             {
-                double var45 = this.posX + (this.minecartX - this.posX) / (double)this.turnProgress;
-                double var46 = this.posY + (this.minecartY - this.posY) / (double)this.turnProgress;
+                double var46 = this.posX + (this.minecartX - this.posX) / (double)this.turnProgress;
+                double var48 = this.posY + (this.minecartY - this.posY) / (double)this.turnProgress;
                 double var5 = this.posZ + (this.minecartZ - this.posZ) / (double)this.turnProgress;
                 double var7 = MathHelper.wrapAngleTo180_double(this.minecartYaw - (double)this.rotationYaw);
                 this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.turnProgress);
                 this.rotationPitch = (float)((double)this.rotationPitch + (this.minecartPitch - (double)this.rotationPitch) / (double)this.turnProgress);
                 --this.turnProgress;
-                this.setPosition(var45, var46, var5);
+                this.setPosition(var46, var48, var5);
                 this.setRotation(this.rotationYaw, this.rotationPitch);
             }
             else
@@ -323,24 +378,24 @@ public class EntityMinecart extends Entity implements IInventory
             this.prevPosY = this.posY;
             this.prevPosZ = this.posZ;
             this.motionY -= 0.03999999910593033D;
-            int var1 = MathHelper.floor_double(this.posX);
-            int var2 = MathHelper.floor_double(this.posY);
-            int var3 = MathHelper.floor_double(this.posZ);
+            int var45 = MathHelper.floor_double(this.posX);
+            var2 = MathHelper.floor_double(this.posY);
+            int var47 = MathHelper.floor_double(this.posZ);
 
-            if (BlockRail.isRailBlockAt(this.worldObj, var1, var2 - 1, var3))
+            if (BlockRail.isRailBlockAt(this.worldObj, var45, var2 - 1, var47))
             {
                 --var2;
             }
 
             double var4 = 0.4D;
             double var6 = 0.0078125D;
-            int var8 = this.worldObj.getBlockId(var1, var2, var3);
+            int var8 = this.worldObj.getBlockId(var45, var2, var47);
 
             if (BlockRail.isRailBlock(var8))
             {
                 this.fallDistance = 0.0F;
                 Vec3 var9 = this.func_70489_a(this.posX, this.posY, this.posZ);
-                int var10 = this.worldObj.getBlockMetadata(var1, var2, var3);
+                int var10 = this.worldObj.getBlockMetadata(var45, var2, var47);
                 this.posY = (double)var2;
                 boolean var11 = false;
                 boolean var12 = false;
@@ -431,10 +486,10 @@ public class EntityMinecart extends Entity implements IInventory
                 }
 
                 var24 = 0.0D;
-                var26 = (double)var1 + 0.5D + (double)var13[0][0] * 0.5D;
-                double var28 = (double)var3 + 0.5D + (double)var13[0][2] * 0.5D;
-                double var30 = (double)var1 + 0.5D + (double)var13[1][0] * 0.5D;
-                double var32 = (double)var3 + 0.5D + (double)var13[1][2] * 0.5D;
+                var26 = (double)var45 + 0.5D + (double)var13[0][0] * 0.5D;
+                double var28 = (double)var47 + 0.5D + (double)var13[0][2] * 0.5D;
+                double var30 = (double)var45 + 0.5D + (double)var13[1][0] * 0.5D;
+                double var32 = (double)var47 + 0.5D + (double)var13[1][2] * 0.5D;
                 var14 = var30 - var26;
                 var16 = var32 - var28;
                 double var34;
@@ -442,13 +497,13 @@ public class EntityMinecart extends Entity implements IInventory
 
                 if (var14 == 0.0D)
                 {
-                    this.posX = (double)var1 + 0.5D;
-                    var24 = this.posZ - (double)var3;
+                    this.posX = (double)var45 + 0.5D;
+                    var24 = this.posZ - (double)var47;
                 }
                 else if (var16 == 0.0D)
                 {
-                    this.posZ = (double)var3 + 0.5D;
-                    var24 = this.posX - (double)var1;
+                    this.posZ = (double)var47 + 0.5D;
+                    var24 = this.posX - (double)var45;
                 }
                 else
                 {
@@ -491,11 +546,11 @@ public class EntityMinecart extends Entity implements IInventory
 
                 this.moveEntity(var34, 0.0D, var36);
 
-                if (var13[0][1] != 0 && MathHelper.floor_double(this.posX) - var1 == var13[0][0] && MathHelper.floor_double(this.posZ) - var3 == var13[0][2])
+                if (var13[0][1] != 0 && MathHelper.floor_double(this.posX) - var45 == var13[0][0] && MathHelper.floor_double(this.posZ) - var47 == var13[0][2])
                 {
                     this.setPosition(this.posX, this.posY + (double)var13[0][1], this.posZ);
                 }
-                else if (var13[1][1] != 0 && MathHelper.floor_double(this.posX) - var1 == var13[1][0] && MathHelper.floor_double(this.posZ) - var3 == var13[1][2])
+                else if (var13[1][1] != 0 && MathHelper.floor_double(this.posX) - var45 == var13[1][0] && MathHelper.floor_double(this.posZ) - var47 == var13[1][2])
                 {
                     this.setPosition(this.posX, this.posY + (double)var13[1][1], this.posZ);
                 }
@@ -537,11 +592,11 @@ public class EntityMinecart extends Entity implements IInventory
                     this.motionZ *= 0.9599999785423279D;
                 }
 
-                Vec3 var52 = this.func_70489_a(this.posX, this.posY, this.posZ);
+                Vec3 var54 = this.func_70489_a(this.posX, this.posY, this.posZ);
 
-                if (var52 != null && var9 != null)
+                if (var54 != null && var9 != null)
                 {
-                    double var39 = (var9.yCoord - var52.yCoord) * 0.05D;
+                    double var39 = (var9.yCoord - var54.yCoord) * 0.05D;
                     var22 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
                     if (var22 > 0.0D)
@@ -550,17 +605,17 @@ public class EntityMinecart extends Entity implements IInventory
                         this.motionZ = this.motionZ / var22 * (var22 + var39);
                     }
 
-                    this.setPosition(this.posX, var52.yCoord, this.posZ);
+                    this.setPosition(this.posX, var54.yCoord, this.posZ);
                 }
 
-                int var51 = MathHelper.floor_double(this.posX);
-                int var53 = MathHelper.floor_double(this.posZ);
+                int var53 = MathHelper.floor_double(this.posX);
+                int var55 = MathHelper.floor_double(this.posZ);
 
-                if (var51 != var1 || var53 != var3)
+                if (var53 != var45 || var55 != var47)
                 {
                     var22 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-                    this.motionX = var22 * (double)(var51 - var1);
-                    this.motionZ = var22 * (double)(var53 - var3);
+                    this.motionX = var22 * (double)(var53 - var45);
+                    this.motionZ = var22 * (double)(var55 - var47);
                 }
 
                 double var41;
@@ -600,22 +655,22 @@ public class EntityMinecart extends Entity implements IInventory
                     }
                     else if (var10 == 1)
                     {
-                        if (this.worldObj.isBlockNormalCube(var1 - 1, var2, var3))
+                        if (this.worldObj.isBlockNormalCube(var45 - 1, var2, var47))
                         {
                             this.motionX = 0.02D;
                         }
-                        else if (this.worldObj.isBlockNormalCube(var1 + 1, var2, var3))
+                        else if (this.worldObj.isBlockNormalCube(var45 + 1, var2, var47))
                         {
                             this.motionX = -0.02D;
                         }
                     }
                     else if (var10 == 0)
                     {
-                        if (this.worldObj.isBlockNormalCube(var1, var2, var3 - 1))
+                        if (this.worldObj.isBlockNormalCube(var45, var2, var47 - 1))
                         {
                             this.motionZ = 0.02D;
                         }
-                        else if (this.worldObj.isBlockNormalCube(var1, var2, var3 + 1))
+                        else if (this.worldObj.isBlockNormalCube(var45, var2, var47 + 1))
                         {
                             this.motionZ = -0.02D;
                         }
@@ -663,12 +718,12 @@ public class EntityMinecart extends Entity implements IInventory
 
             this.doBlockCollisions();
             this.rotationPitch = 0.0F;
-            double var47 = this.prevPosX - this.posX;
-            double var48 = this.prevPosZ - this.posZ;
+            double var49 = this.prevPosX - this.posX;
+            double var50 = this.prevPosZ - this.posZ;
 
-            if (var47 * var47 + var48 * var48 > 0.001D)
+            if (var49 * var49 + var50 * var50 > 0.001D)
             {
-                this.rotationYaw = (float)(Math.atan2(var48, var47) * 180.0D / Math.PI);
+                this.rotationYaw = (float)(Math.atan2(var50, var49) * 180.0D / Math.PI);
 
                 if (this.field_70499_f)
                 {
@@ -676,9 +731,9 @@ public class EntityMinecart extends Entity implements IInventory
                 }
             }
 
-            double var49 = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
+            double var51 = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
 
-            if (var49 < -170.0D || var49 >= 170.0D)
+            if (var51 < -170.0D || var51 >= 170.0D)
             {
                 this.rotationYaw += 180.0F;
                 this.field_70499_f = !this.field_70499_f;
@@ -689,9 +744,9 @@ public class EntityMinecart extends Entity implements IInventory
 
             if (var15 != null && !var15.isEmpty())
             {
-                for (int var50 = 0; var50 < var15.size(); ++var50)
+                for (int var52 = 0; var52 < var15.size(); ++var52)
                 {
-                    Entity var17 = (Entity)var15.get(var50);
+                    Entity var17 = (Entity)var15.get(var52);
 
                     if (var17 != this.riddenByEntity && var17.canBePushed() && var17 instanceof EntityMinecart)
                     {

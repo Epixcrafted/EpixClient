@@ -20,7 +20,7 @@ public class EntityAIPanic extends EntityAIBase
      */
     public boolean shouldExecute()
     {
-        if (this.theEntityCreature.getAITarget() == null)
+        if (this.theEntityCreature.getAITarget() == null && !this.theEntityCreature.isBurning())
         {
             return false;
         }

@@ -46,28 +46,15 @@ public class EffectRenderer
     {
         for (int var1 = 0; var1 < 4; ++var1)
         {
-            EntityFX var2 = null;
-
-            try
+            for (int var2 = 0; var2 < this.fxLayers[var1].size(); ++var2)
             {
-                for (int var3 = 0; var3 < this.fxLayers[var1].size(); ++var3)
+                EntityFX var3 = (EntityFX)this.fxLayers[var1].get(var2);
+                var3.onUpdate();
+
+                if (var3.isDead)
                 {
-                    var2 = (EntityFX)this.fxLayers[var1].get(var3);
-                    var2.onUpdate();
-
-                    if (var2.isDead)
-                    {
-                        this.fxLayers[var1].remove(var3--);
-                    }
+                    this.fxLayers[var1].remove(var2--);
                 }
-            }
-            catch (Throwable var7)
-            {
-                CrashReport var4 = CrashReport.makeCrashReport(var7, "Uncaught exception while ticking particles");
-                CrashReportCategory var5 = var4.makeCategory("Particle engine details");
-                var5.addCrashSectionCallable("Last ticked particle", new CallableLastTickedParticle(this, var2));
-                var5.addCrashSection("Texture index", Integer.valueOf(var1));
-                throw new ReportedException(var4);
             }
         }
     }
@@ -112,6 +99,7 @@ public class EffectRenderer
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
                 var10.startDrawingQuads();
 
                 for (int var11 = 0; var11 < this.fxLayers[var8].size(); ++var11)
@@ -123,6 +111,7 @@ public class EffectRenderer
 
                 var10.draw();
                 GL11.glDisable(GL11.GL_BLEND);
+                GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             }
         }
     }

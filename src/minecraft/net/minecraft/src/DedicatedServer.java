@@ -36,7 +36,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         var1.setDaemon(true);
         var1.start();
         ConsoleLogManager.init();
-        logger.info("Starting minecraft server version 1.4.5");
+        logger.info("Starting minecraft server version 1.4.7");
 
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {

@@ -82,15 +82,16 @@ public class ServerAddress
     {
         try
         {
-            Hashtable var1 = new Hashtable();
-            var1.put("java.naming.factory.initial", "com.sun.jndi.dns.DnsContextFactory");
-            var1.put("java.naming.provider.url", "dns:");
-            InitialDirContext var2 = new InitialDirContext(var1);
-            Attributes var3 = var2.getAttributes("_minecraft._tcp." + par0Str, new String[] {"SRV"});
-            String[] var4 = var3.get("srv").get().toString().split(" ", 4);
-            return new String[] {var4[3], var4[2]};
+            Class.forName("com.sun.jndi.dns.DnsContextFactory");
+            Hashtable var2 = new Hashtable();
+            var2.put("java.naming.factory.initial", "com.sun.jndi.dns.DnsContextFactory");
+            var2.put("java.naming.provider.url", "dns:");
+            InitialDirContext var3 = new InitialDirContext(var2);
+            Attributes var4 = var3.getAttributes("_minecraft._tcp." + par0Str, new String[] {"SRV"});
+            String[] var5 = var4.get("srv").get().toString().split(" ", 4);
+            return new String[] {var5[3], var5[2]};
         }
-        catch (Throwable var5)
+        catch (Throwable var6)
         {
             return new String[] {par0Str, Integer.toString(25565)};
         }

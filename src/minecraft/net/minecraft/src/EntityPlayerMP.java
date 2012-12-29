@@ -253,7 +253,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void onDeath(DamageSource par1DamageSource)
     {
-        this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(par1DamageSource.getDeathMessage(this)));
+        this.mcServer.getConfigurationManager().func_92062_k(par1DamageSource.getDeathMessage(this));
 
         if (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
         {
@@ -274,7 +274,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         {
             boolean var3 = this.mcServer.isDedicatedServer() && this.mcServer.isPVPEnabled() && "fall".equals(par1DamageSource.damageType);
 
-            if (!var3 && this.initialInvulnerability > 0)
+            if (!var3 && this.initialInvulnerability > 0 && par1DamageSource != DamageSource.outOfWorld)
             {
                 return false;
             }

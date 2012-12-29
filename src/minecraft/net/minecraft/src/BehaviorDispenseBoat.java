@@ -7,6 +7,7 @@ public class BehaviorDispenseBoat extends BehaviorDefaultDispenseItem
     /** Reference to the BehaviorDefaultDispenseItem object. */
     private final BehaviorDefaultDispenseItem defaultItemDispenseBehavior;
 
+    /** Reference to the MinecraftServer object. */
     final MinecraftServer mcServer;
 
     public BehaviorDispenseBoat(MinecraftServer par1MinecraftServer)

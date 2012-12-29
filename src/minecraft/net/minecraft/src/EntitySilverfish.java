@@ -91,7 +91,7 @@ public class EntitySilverfish extends EntityMob
         if (this.attackTime <= 0 && par2 < 1.2F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY)
         {
             this.attackTime = 20;
-            par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackStrength(par1Entity));
+            this.attackEntityAsMob(par1Entity);
         }
     }
 

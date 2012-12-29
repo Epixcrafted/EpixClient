@@ -73,8 +73,8 @@ public class EnchantmentProtection extends Enchantment
         }
         else
         {
-            int var3 = (6 + par1 * par1) / 2;
-            return this.protectionType == 0 ? var3 : (this.protectionType == 1 && par2DamageSource.isFireDamage() ? var3 : (this.protectionType == 2 && par2DamageSource == DamageSource.fall ? var3 * 2 : ((this.protectionType != 3 || par2DamageSource != DamageSource.explosion) && par2DamageSource != DamageSource.field_76375_l ? (this.protectionType == 4 && par2DamageSource.isProjectile() ? var3 : 0) : var3)));
+            float var3 = (float)(6 + par1 * par1) / 3.0F;
+            return this.protectionType == 0 ? MathHelper.floor_float(var3 * 0.75F) : (this.protectionType == 1 && par2DamageSource.isFireDamage() ? MathHelper.floor_float(var3 * 1.25F) : (this.protectionType == 2 && par2DamageSource == DamageSource.fall ? MathHelper.floor_float(var3 * 2.5F) : ((this.protectionType != 3 || par2DamageSource != DamageSource.explosion) && par2DamageSource != DamageSource.field_76375_l ? (this.protectionType == 4 && par2DamageSource.isProjectile() ? MathHelper.floor_float(var3 * 1.5F) : 0) : MathHelper.floor_float(var3 * 1.5F))));
         }
     }
 
@@ -100,5 +100,29 @@ public class EnchantmentProtection extends Enchantment
         {
             return super.canApplyTogether(par1Enchantment);
         }
+    }
+
+    public static int func_92093_a(Entity par0Entity, int par1)
+    {
+        int var2 = EnchantmentHelper.getMaxEnchantmentLevel(Enchantment.fireProtection.effectId, par0Entity.getLastActiveItems());
+
+        if (var2 > 0)
+        {
+            par1 -= MathHelper.floor_float((float)par1 * (float)var2 * 0.15F);
+        }
+
+        return par1;
+    }
+
+    public static double func_92092_a(Entity par0Entity, double par1)
+    {
+        int var3 = EnchantmentHelper.getMaxEnchantmentLevel(Enchantment.blastProtection.effectId, par0Entity.getLastActiveItems());
+
+        if (var3 > 0)
+        {
+            par1 -= (double)MathHelper.floor_double(par1 * (double)((float)var3 * 0.15F));
+        }
+
+        return par1;
     }
 }

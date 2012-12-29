@@ -57,12 +57,7 @@ public abstract class World implements IBlockAccess
      * Set to 2 whenever a lightning bolt is generated in SSP. Decrements if > 0 in updateWeather(). Value appears to be
      * unused.
      */
-    protected int lastLightningBolt = 0;
-
-    /**
-     * If > 0, the sky and skylight colors are illuminated by a lightning flash
-     */
-    public int lightningFlash = 0;
+    public int lastLightningBolt = 0;
 
     /** true while the world is editing blocks */
     public boolean editingBlocks = false;
@@ -1363,7 +1358,7 @@ public abstract class World implements IBlockAccess
     /**
      * par8 is loudness, all pars passed to minecraftInstance.sndManager.playSound
      */
-    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9) {}
+    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9, boolean par10) {}
 
     /**
      * Plays a record at the specified coordinates of the specified name. Args: recordName, x, y, z
@@ -1708,9 +1703,9 @@ public abstract class World implements IBlockAccess
             var12 = var12 * var16 + var15 * (1.0F - var16);
         }
 
-        if (this.lightningFlash > 0)
+        if (this.lastLightningBolt > 0)
         {
-            var15 = (float)this.lightningFlash - par2;
+            var15 = (float)this.lastLightningBolt - par2;
 
             if (var15 > 1.0F)
             {
@@ -1886,11 +1881,12 @@ public abstract class World implements IBlockAccess
 
             try
             {
+                ++var2.ticksExisted;
                 var2.onUpdate();
             }
-            catch (Throwable var8)
+            catch (Throwable var6)
             {
-                var4 = CrashReport.makeCrashReport(var8, "Ticking entity");
+                var4 = CrashReport.makeCrashReport(var6, "Ticking entity");
                 var5 = var4.makeCategory("Entity being ticked");
 
                 if (var2 == null)
@@ -1963,7 +1959,15 @@ public abstract class World implements IBlockAccess
                 {
                     var4 = CrashReport.makeCrashReport(var7, "Ticking entity");
                     var5 = var4.makeCategory("Entity being ticked");
-                    var2.func_85029_a(var5);
+
+                    if (var2 == null)
+                    {
+                        var5.addCrashSection("Entity", "~~NULL~~");
+                    }
+                    else
+                    {
+                        var2.func_85029_a(var5);
+                    }
 
                     throw new ReportedException(var4);
                 }
@@ -2003,11 +2007,19 @@ public abstract class World implements IBlockAccess
                 {
                     var9.updateEntity();
                 }
-                catch (Throwable var6)
+                catch (Throwable var8)
                 {
-                    var4 = CrashReport.makeCrashReport(var6, "Ticking tile entity");
+                    var4 = CrashReport.makeCrashReport(var8, "Ticking tile entity");
                     var5 = var4.makeCategory("Tile entity being ticked");
-                    var9.func_85027_a(var5);
+
+                    if (var9 == null)
+                    {
+                        var5.addCrashSection("Tile entity", "~~NULL~~");
+                    }
+                    else
+                    {
+                        var9.func_85027_a(var5);
+                    }
 
                     throw new ReportedException(var4);
                 }
@@ -2119,6 +2131,7 @@ public abstract class World implements IBlockAccess
                 }
                 else
                 {
+                    ++par1Entity.ticksExisted;
                     par1Entity.onUpdate();
                 }
             }
@@ -2815,11 +2828,6 @@ public abstract class World implements IBlockAccess
     {
         if (!this.provider.hasNoSky)
         {
-            if (this.lastLightningBolt > 0)
-            {
-                --this.lastLightningBolt;
-            }
-
             int var1 = this.worldInfo.getThunderTime();
 
             if (var1 <= 0)
@@ -3747,7 +3755,7 @@ public abstract class World implements IBlockAccess
         {
             EntityPlayer var13 = (EntityPlayer)this.playerEntities.get(var12);
 
-            if (!var13.capabilities.disableDamage)
+            if (!var13.capabilities.disableDamage && var13.isEntityAlive())
             {
                 double var14 = var13.getDistanceSq(par1, par3, par5);
                 double var16 = par7;
@@ -4051,9 +4059,22 @@ public abstract class World implements IBlockAccess
      */
     public void playAuxSFXAtEntity(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
     {
-        for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7)
+        try
         {
-            ((IWorldAccess)this.worldAccesses.get(var7)).playAuxSFX(par1EntityPlayer, par2, par3, par4, par5, par6);
+            for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7)
+            {
+                ((IWorldAccess)this.worldAccesses.get(var7)).playAuxSFX(par1EntityPlayer, par2, par3, par4, par5, par6);
+            }
+        }
+        catch (Throwable var10)
+        {
+            CrashReport var8 = CrashReport.makeCrashReport(var10, "Playing level event");
+            CrashReportCategory var9 = var8.makeCategory("Level event being played");
+            var9.addCrashSection("Block coordinates", CrashReportCategory.func_85071_a(par3, par4, par5));
+            var9.addCrashSection("Event source", par1EntityPlayer);
+            var9.addCrashSection("Event type", Integer.valueOf(par2));
+            var9.addCrashSection("Event data", Integer.valueOf(par6));
+            throw new ReportedException(var8);
         }
     }
 
@@ -4167,4 +4188,6 @@ public abstract class World implements IBlockAccess
 
         return this.theCalendar;
     }
+
+    public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13NBTTagCompound) {}
 }

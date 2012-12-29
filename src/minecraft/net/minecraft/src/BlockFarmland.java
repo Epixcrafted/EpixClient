@@ -78,6 +78,11 @@ public class BlockFarmland extends Block
     {
         if (!par1World.isRemote && par1World.rand.nextFloat() < par6 - 0.5F)
         {
+            if (!(par5Entity instanceof EntityPlayer) && !par1World.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+            {
+                return;
+            }
+
             par1World.setBlockWithNotify(par2, par3, par4, Block.dirt.blockID);
         }
     }

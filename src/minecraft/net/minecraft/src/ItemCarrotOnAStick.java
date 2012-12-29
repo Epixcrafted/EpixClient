@@ -43,7 +43,9 @@ public class ItemCarrotOnAStick extends Item
 
                 if (par1ItemStack.stackSize == 0)
                 {
-                    return new ItemStack(Item.fishingRod);
+                    ItemStack var5 = new ItemStack(Item.fishingRod);
+                    var5.setTagCompound(par1ItemStack.stackTagCompound);
+                    return var5;
                 }
             }
         }

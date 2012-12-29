@@ -920,7 +920,7 @@ public class FontRenderer
 
                         if (var9 != 108 && var9 != 76)
                         {
-                            if (var9 == 114 || var9 == 82)
+                            if (var9 == 114 || var9 == 82 || isFormatColor(var9))
                             {
                                 var7 = false;
                             }

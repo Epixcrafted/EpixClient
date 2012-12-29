@@ -104,6 +104,22 @@ public class GuiMerchant extends GuiContainer
         int var5 = (this.width - this.xSize) / 2;
         int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
+        MerchantRecipeList var7 = this.theIMerchant.getRecipes(this.mc.thePlayer);
+
+        if (var7 != null && !var7.isEmpty())
+        {
+            int var8 = this.currentRecipeIndex;
+            MerchantRecipe var9 = (MerchantRecipe)var7.get(var8);
+
+            if (var9.func_82784_g())
+            {
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/trading.png"));
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 21, 212, 0, 28, 21);
+                this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 51, 212, 0, 28, 21);
+            }
+        }
     }
 
     /**
@@ -120,16 +136,6 @@ public class GuiMerchant extends GuiContainer
             int var6 = (this.height - this.ySize) / 2;
             int var7 = this.currentRecipeIndex;
             MerchantRecipe var8 = (MerchantRecipe)var4.get(var7);
-
-            if (var8.func_82784_g())
-            {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/trading.png"));
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glDisable(GL11.GL_LIGHTING);
-                this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 21, 212, 0, 28, 21);
-                this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 51, 212, 0, 28, 21);
-            }
-
             GL11.glPushMatrix();
             ItemStack var9 = var8.getItemToBuy();
             ItemStack var10 = var8.getSecondItemToBuy();

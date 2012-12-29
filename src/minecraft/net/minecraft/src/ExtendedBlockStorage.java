@@ -39,13 +39,17 @@ public class ExtendedBlockStorage
     /** The NibbleArray containing a block of Sky-light data. */
     private NibbleArray skylightArray;
 
-    public ExtendedBlockStorage(int par1)
+    public ExtendedBlockStorage(int par1, boolean par2)
     {
         this.yBase = par1;
         this.blockLSBArray = new byte[4096];
         this.blockMetadataArray = new NibbleArray(this.blockLSBArray.length, 4);
-        this.skylightArray = new NibbleArray(this.blockLSBArray.length, 4);
         this.blocklightArray = new NibbleArray(this.blockLSBArray.length, 4);
+
+        if (par2)
+        {
+            this.skylightArray = new NibbleArray(this.blockLSBArray.length, 4);
+        }
     }
 
     /**

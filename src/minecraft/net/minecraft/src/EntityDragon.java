@@ -123,7 +123,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 
             if (var2 <= -0.3F && var1 >= -0.3F)
             {
-                this.worldObj.playSound(this.posX, this.posY, this.posZ, "mob.enderdragon.wings", 5.0F, 0.8F + this.rand.nextFloat() * 0.3F);
+                this.worldObj.playSound(this.posX, this.posY, this.posZ, "mob.enderdragon.wings", 5.0F, 0.8F + this.rand.nextFloat() * 0.3F, false);
             }
         }
 

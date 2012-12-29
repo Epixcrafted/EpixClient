@@ -282,7 +282,6 @@ public class WorldServer extends World
                 if (this.canLightningStrikeAt(var9, var11, var10))
                 {
                     this.addWeatherEffect(new EntityLightningBolt(this, (double)var9, (double)var11, (double)var10));
-                    this.lastLightningBolt = 2;
                 }
             }
 

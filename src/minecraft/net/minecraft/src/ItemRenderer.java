@@ -68,7 +68,7 @@ public class ItemRenderer
             GL11.glRotatef(50.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
             GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
-            this.renderItemIn2D(var5, var8, var9, var7, var10);
+            renderItemIn2D(var5, var8, var9, var7, var10, 0.0625F);
 
             if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0)
             {
@@ -86,14 +86,14 @@ public class ItemRenderer
                 float var16 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F * 8.0F;
                 GL11.glTranslatef(var16, 0.0F, 0.0F);
                 GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
-                this.renderItemIn2D(var5, 0.0F, 0.0F, 1.0F, 1.0F);
+                renderItemIn2D(var5, 0.0F, 0.0F, 1.0F, 1.0F, 0.0625F);
                 GL11.glPopMatrix();
                 GL11.glPushMatrix();
                 GL11.glScalef(var15, var15, var15);
                 var16 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F * 8.0F;
                 GL11.glTranslatef(-var16, 0.0F, 0.0F);
                 GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
-                this.renderItemIn2D(var5, 0.0F, 0.0F, 1.0F, 1.0F);
+                renderItemIn2D(var5, 0.0F, 0.0F, 1.0F, 1.0F, 0.0625F);
                 GL11.glPopMatrix();
                 GL11.glMatrixMode(GL11.GL_MODELVIEW);
                 GL11.glDisable(GL11.GL_BLEND);
@@ -110,88 +110,87 @@ public class ItemRenderer
     /**
      * Renders an item held in hand as a 2D texture with thickness
      */
-    private void renderItemIn2D(Tessellator par1Tessellator, float par2, float par3, float par4, float par5)
+    public static void renderItemIn2D(Tessellator par0Tessellator, float par1, float par2, float par3, float par4, float par5)
     {
         float var6 = 1.0F;
-        float var7 = 0.0625F;
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(0.0F, 0.0F, 1.0F);
-        par1Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, (double)par2, (double)par5);
-        par1Tessellator.addVertexWithUV((double)var6, 0.0D, 0.0D, (double)par4, (double)par5);
-        par1Tessellator.addVertexWithUV((double)var6, 1.0D, 0.0D, (double)par4, (double)par3);
-        par1Tessellator.addVertexWithUV(0.0D, 1.0D, 0.0D, (double)par2, (double)par3);
-        par1Tessellator.draw();
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        par1Tessellator.addVertexWithUV(0.0D, 1.0D, (double)(0.0F - var7), (double)par2, (double)par3);
-        par1Tessellator.addVertexWithUV((double)var6, 1.0D, (double)(0.0F - var7), (double)par4, (double)par3);
-        par1Tessellator.addVertexWithUV((double)var6, 0.0D, (double)(0.0F - var7), (double)par4, (double)par5);
-        par1Tessellator.addVertexWithUV(0.0D, 0.0D, (double)(0.0F - var7), (double)par2, (double)par5);
-        par1Tessellator.draw();
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-        int var8;
+        par0Tessellator.startDrawingQuads();
+        par0Tessellator.setNormal(0.0F, 0.0F, 1.0F);
+        par0Tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, (double)par1, (double)par4);
+        par0Tessellator.addVertexWithUV((double)var6, 0.0D, 0.0D, (double)par3, (double)par4);
+        par0Tessellator.addVertexWithUV((double)var6, 1.0D, 0.0D, (double)par3, (double)par2);
+        par0Tessellator.addVertexWithUV(0.0D, 1.0D, 0.0D, (double)par1, (double)par2);
+        par0Tessellator.draw();
+        par0Tessellator.startDrawingQuads();
+        par0Tessellator.setNormal(0.0F, 0.0F, -1.0F);
+        par0Tessellator.addVertexWithUV(0.0D, 1.0D, (double)(0.0F - par5), (double)par1, (double)par2);
+        par0Tessellator.addVertexWithUV((double)var6, 1.0D, (double)(0.0F - par5), (double)par3, (double)par2);
+        par0Tessellator.addVertexWithUV((double)var6, 0.0D, (double)(0.0F - par5), (double)par3, (double)par4);
+        par0Tessellator.addVertexWithUV(0.0D, 0.0D, (double)(0.0F - par5), (double)par1, (double)par4);
+        par0Tessellator.draw();
+        par0Tessellator.startDrawingQuads();
+        par0Tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+        int var7;
+        float var8;
         float var9;
         float var10;
-        float var11;
 
-        for (var8 = 0; var8 < 16; ++var8)
+        for (var7 = 0; var7 < 16; ++var7)
         {
-            var9 = (float)var8 / 16.0F;
-            var10 = par2 + (par4 - par2) * var9 - 0.001953125F;
-            var11 = var6 * var9;
-            par1Tessellator.addVertexWithUV((double)var11, 0.0D, (double)(0.0F - var7), (double)var10, (double)par5);
-            par1Tessellator.addVertexWithUV((double)var11, 0.0D, 0.0D, (double)var10, (double)par5);
-            par1Tessellator.addVertexWithUV((double)var11, 1.0D, 0.0D, (double)var10, (double)par3);
-            par1Tessellator.addVertexWithUV((double)var11, 1.0D, (double)(0.0F - var7), (double)var10, (double)par3);
+            var8 = (float)var7 / 16.0F;
+            var9 = par1 + (par3 - par1) * var8 - 0.001953125F;
+            var10 = var6 * var8;
+            par0Tessellator.addVertexWithUV((double)var10, 0.0D, (double)(0.0F - par5), (double)var9, (double)par4);
+            par0Tessellator.addVertexWithUV((double)var10, 0.0D, 0.0D, (double)var9, (double)par4);
+            par0Tessellator.addVertexWithUV((double)var10, 1.0D, 0.0D, (double)var9, (double)par2);
+            par0Tessellator.addVertexWithUV((double)var10, 1.0D, (double)(0.0F - par5), (double)var9, (double)par2);
         }
 
-        par1Tessellator.draw();
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(1.0F, 0.0F, 0.0F);
+        par0Tessellator.draw();
+        par0Tessellator.startDrawingQuads();
+        par0Tessellator.setNormal(1.0F, 0.0F, 0.0F);
 
-        for (var8 = 0; var8 < 16; ++var8)
+        for (var7 = 0; var7 < 16; ++var7)
         {
-            var9 = (float)var8 / 16.0F;
-            var10 = par2 + (par4 - par2) * var9 - 0.001953125F;
-            var11 = var6 * var9 + 0.0625F;
-            par1Tessellator.addVertexWithUV((double)var11, 1.0D, (double)(0.0F - var7), (double)var10, (double)par3);
-            par1Tessellator.addVertexWithUV((double)var11, 1.0D, 0.0D, (double)var10, (double)par3);
-            par1Tessellator.addVertexWithUV((double)var11, 0.0D, 0.0D, (double)var10, (double)par5);
-            par1Tessellator.addVertexWithUV((double)var11, 0.0D, (double)(0.0F - var7), (double)var10, (double)par5);
+            var8 = (float)var7 / 16.0F;
+            var9 = par1 + (par3 - par1) * var8 - 0.001953125F;
+            var10 = var6 * var8 + 0.0625F;
+            par0Tessellator.addVertexWithUV((double)var10, 1.0D, (double)(0.0F - par5), (double)var9, (double)par2);
+            par0Tessellator.addVertexWithUV((double)var10, 1.0D, 0.0D, (double)var9, (double)par2);
+            par0Tessellator.addVertexWithUV((double)var10, 0.0D, 0.0D, (double)var9, (double)par4);
+            par0Tessellator.addVertexWithUV((double)var10, 0.0D, (double)(0.0F - par5), (double)var9, (double)par4);
         }
 
-        par1Tessellator.draw();
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        par0Tessellator.draw();
+        par0Tessellator.startDrawingQuads();
+        par0Tessellator.setNormal(0.0F, 1.0F, 0.0F);
 
-        for (var8 = 0; var8 < 16; ++var8)
+        for (var7 = 0; var7 < 16; ++var7)
         {
-            var9 = (float)var8 / 16.0F;
-            var10 = par5 + (par3 - par5) * var9 - 0.001953125F;
-            var11 = var6 * var9 + 0.0625F;
-            par1Tessellator.addVertexWithUV(0.0D, (double)var11, 0.0D, (double)par2, (double)var10);
-            par1Tessellator.addVertexWithUV((double)var6, (double)var11, 0.0D, (double)par4, (double)var10);
-            par1Tessellator.addVertexWithUV((double)var6, (double)var11, (double)(0.0F - var7), (double)par4, (double)var10);
-            par1Tessellator.addVertexWithUV(0.0D, (double)var11, (double)(0.0F - var7), (double)par2, (double)var10);
+            var8 = (float)var7 / 16.0F;
+            var9 = par4 + (par2 - par4) * var8 - 0.001953125F;
+            var10 = var6 * var8 + 0.0625F;
+            par0Tessellator.addVertexWithUV(0.0D, (double)var10, 0.0D, (double)par1, (double)var9);
+            par0Tessellator.addVertexWithUV((double)var6, (double)var10, 0.0D, (double)par3, (double)var9);
+            par0Tessellator.addVertexWithUV((double)var6, (double)var10, (double)(0.0F - par5), (double)par3, (double)var9);
+            par0Tessellator.addVertexWithUV(0.0D, (double)var10, (double)(0.0F - par5), (double)par1, (double)var9);
         }
 
-        par1Tessellator.draw();
-        par1Tessellator.startDrawingQuads();
-        par1Tessellator.setNormal(0.0F, -1.0F, 0.0F);
+        par0Tessellator.draw();
+        par0Tessellator.startDrawingQuads();
+        par0Tessellator.setNormal(0.0F, -1.0F, 0.0F);
 
-        for (var8 = 0; var8 < 16; ++var8)
+        for (var7 = 0; var7 < 16; ++var7)
         {
-            var9 = (float)var8 / 16.0F;
-            var10 = par5 + (par3 - par5) * var9 - 0.001953125F;
-            var11 = var6 * var9;
-            par1Tessellator.addVertexWithUV((double)var6, (double)var11, 0.0D, (double)par4, (double)var10);
-            par1Tessellator.addVertexWithUV(0.0D, (double)var11, 0.0D, (double)par2, (double)var10);
-            par1Tessellator.addVertexWithUV(0.0D, (double)var11, (double)(0.0F - var7), (double)par2, (double)var10);
-            par1Tessellator.addVertexWithUV((double)var6, (double)var11, (double)(0.0F - var7), (double)par4, (double)var10);
+            var8 = (float)var7 / 16.0F;
+            var9 = par4 + (par2 - par4) * var8 - 0.001953125F;
+            var10 = var6 * var8;
+            par0Tessellator.addVertexWithUV((double)var6, (double)var10, 0.0D, (double)par3, (double)var9);
+            par0Tessellator.addVertexWithUV(0.0D, (double)var10, 0.0D, (double)par1, (double)var9);
+            par0Tessellator.addVertexWithUV(0.0D, (double)var10, (double)(0.0F - par5), (double)par1, (double)var9);
+            par0Tessellator.addVertexWithUV((double)var6, (double)var10, (double)(0.0F - par5), (double)par3, (double)var9);
         }
 
-        par1Tessellator.draw();
+        par0Tessellator.draw();
     }
 
     /**

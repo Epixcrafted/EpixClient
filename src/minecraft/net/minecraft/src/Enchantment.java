@@ -1,8 +1,11 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+
 public abstract class Enchantment
 {
     public static final Enchantment[] enchantmentsList = new Enchantment[256];
+    public static final Enchantment[] field_92090_c;
 
     /** Converts environmental damage to armour damage */
     public static final Enchantment protection = new EnchantmentProtection(0, 10, 0);
@@ -26,6 +29,7 @@ public abstract class Enchantment
 
     /** Increases underwater mining rate */
     public static final Enchantment aquaAffinity = new EnchantmentWaterWorker(6, 2);
+    public static final Enchantment field_92091_k = new EnchantmentThorns(7, 1);
 
     /** Extra damage to mobs */
     public static final Enchantment sharpness = new EnchantmentDamage(16, 10, 0);
@@ -190,5 +194,29 @@ public abstract class Enchantment
     {
         String var2 = StatCollector.translateToLocal(this.getName());
         return var2 + " " + StatCollector.translateToLocal("enchantment.level." + par1);
+    }
+
+    public boolean func_92089_a(ItemStack par1ItemStack)
+    {
+        return this.type.canEnchantItem(par1ItemStack.getItem());
+    }
+
+    static
+    {
+        ArrayList var0 = new ArrayList();
+        Enchantment[] var1 = enchantmentsList;
+        int var2 = var1.length;
+
+        for (int var3 = 0; var3 < var2; ++var3)
+        {
+            Enchantment var4 = var1[var3];
+
+            if (var4 != null)
+            {
+                var0.add(var4);
+            }
+        }
+
+        field_92090_c = (Enchantment[])var0.toArray(new Enchantment[0]);
     }
 }

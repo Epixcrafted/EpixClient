@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -172,16 +171,34 @@ public class ContainerEnchantment extends Container
             if (!this.worldPointer.isRemote)
             {
                 List var4 = EnchantmentHelper.buildEnchantmentList(this.rand, var3, this.enchantLevels[par2]);
+                boolean var5 = var3.itemID == Item.book.shiftedIndex;
 
                 if (var4 != null)
                 {
                     par1EntityPlayer.addExperienceLevel(-this.enchantLevels[par2]);
-                    Iterator var5 = var4.iterator();
 
-                    while (var5.hasNext())
+                    if (var5)
                     {
-                        EnchantmentData var6 = (EnchantmentData)var5.next();
-                        var3.addEnchantment(var6.enchantmentobj, var6.enchantmentLevel);
+                        var3.itemID = Item.field_92105_bW.shiftedIndex;
+                    }
+
+                    int var6 = var5 ? this.rand.nextInt(var4.size()) : -1;
+
+                    for (int var7 = 0; var7 < var4.size(); ++var7)
+                    {
+                        EnchantmentData var8 = (EnchantmentData)var4.get(var7);
+
+                        if (!var5 || var7 == var6)
+                        {
+                            if (var5)
+                            {
+                                Item.field_92105_bW.func_92115_a(var3, var8);
+                            }
+                            else
+                            {
+                                var3.addEnchantment(var8.enchantmentobj, var8.enchantmentLevel);
+                            }
+                        }
                     }
 
                     this.onCraftMatrixChanged(this.tableInventory);

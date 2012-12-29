@@ -274,7 +274,7 @@ public class BlockPortal extends BlockBreakable
     {
         if (par5Random.nextInt(100) == 0)
         {
-            par1World.playSound((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "portal.portal", 0.5F, par5Random.nextFloat() * 0.4F + 0.8F);
+            par1World.playSound((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "portal.portal", 0.5F, par5Random.nextFloat() * 0.4F + 0.8F, false);
         }
 
         for (int var6 = 0; var6 < 4; ++var6)

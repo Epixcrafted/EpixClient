@@ -37,6 +37,7 @@ public class GuiScreen extends Gui
     private GuiButton selectedButton = null;
     private int field_85042_b = 0;
     private long field_85043_c = 0L;
+    private int field_92018_d = 0;
 
     /**
      * Draws the screen and all the components in it.
@@ -187,12 +188,22 @@ public class GuiScreen extends Gui
 
         if (Mouse.getEventButtonState())
         {
+            if (this.mc.gameSettings.touchscreen && this.field_92018_d++ > 0)
+            {
+                return;
+            }
+
             this.field_85042_b = Mouse.getEventButton();
             this.field_85043_c = Minecraft.getSystemTime();
             this.mouseClicked(var1, var2, this.field_85042_b);
         }
         else if (Mouse.getEventButton() != -1)
         {
+            if (this.mc.gameSettings.touchscreen && --this.field_92018_d > 0)
+            {
+                return;
+            }
+
             this.field_85042_b = -1;
             this.mouseMovedOrUp(var1, var2, Mouse.getEventButton());
         }

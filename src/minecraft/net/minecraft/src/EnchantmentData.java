@@ -14,4 +14,9 @@ public class EnchantmentData extends WeightedRandomItem
         this.enchantmentobj = par1Enchantment;
         this.enchantmentLevel = par2;
     }
+
+    public EnchantmentData(int par1, int par2)
+    {
+        this(Enchantment.enchantmentsList[par1], par2);
+    }
 }

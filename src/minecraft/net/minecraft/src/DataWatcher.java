@@ -13,6 +13,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DataWatcher
 {
+    private boolean field_92086_a = true;
     private static final HashMap dataTypes = new HashMap();
     private final Map watchedObjects = new HashMap();
 
@@ -46,6 +47,7 @@ public class DataWatcher
             this.field_75694_d.writeLock().lock();
             this.watchedObjects.put(Integer.valueOf(par1), var4);
             this.field_75694_d.writeLock().unlock();
+            this.field_92086_a = false;
         }
     }
 
@@ -58,6 +60,7 @@ public class DataWatcher
         this.field_75694_d.writeLock().lock();
         this.watchedObjects.put(Integer.valueOf(par1), var3);
         this.field_75694_d.writeLock().unlock();
+        this.field_92086_a = false;
     }
 
     /**
@@ -345,6 +348,11 @@ public class DataWatcher
         }
 
         this.field_75694_d.writeLock().unlock();
+    }
+
+    public boolean func_92085_d()
+    {
+        return this.field_92086_a;
     }
 
     static

@@ -18,11 +18,11 @@ public class RecipesIngots
         {
             Block var3 = (Block)this.recipeItems[var2][0];
             ItemStack var4 = (ItemStack)this.recipeItems[var2][1];
-            par1CraftingManager.addRecipe(new ItemStack(var3), new Object[] {"###", "###", "###", '#', var4});
-            par1CraftingManager.addRecipe(var4, new Object[] {"#", '#', var3});
+            par1CraftingManager.func_92103_a(new ItemStack(var3), new Object[] {"###", "###", "###", '#', var4});
+            par1CraftingManager.func_92103_a(var4, new Object[] {"#", '#', var3});
         }
 
-        par1CraftingManager.addRecipe(new ItemStack(Item.ingotGold), new Object[] {"###", "###", "###", '#', Item.goldNugget});
-        par1CraftingManager.addRecipe(new ItemStack(Item.goldNugget, 9), new Object[] {"#", '#', Item.ingotGold});
+        par1CraftingManager.func_92103_a(new ItemStack(Item.ingotGold), new Object[] {"###", "###", "###", '#', Item.goldNugget});
+        par1CraftingManager.func_92103_a(new ItemStack(Item.goldNugget, 9), new Object[] {"#", '#', Item.ingotGold});
     }
 }

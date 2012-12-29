@@ -270,11 +270,6 @@ public class WorldClient extends World
     {
         if (!this.provider.hasNoSky)
         {
-            if (this.lastLightningBolt > 0)
-            {
-                --this.lastLightningBolt;
-            }
-
             this.prevRainingStrength = this.rainingStrength;
 
             if (this.worldInfo.isRaining())
@@ -417,19 +412,34 @@ public class WorldClient extends World
     /**
      * par8 is loudness, all pars passed to minecraftInstance.sndManager.playSound
      */
-    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9)
+    public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9, boolean par10)
     {
-        float var10 = 16.0F;
+        float var11 = 16.0F;
 
         if (par8 > 1.0F)
         {
-            var10 *= par8;
+            var11 *= par8;
         }
 
-        if (this.mc.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(var10 * var10))
+        double var12 = this.mc.renderViewEntity.getDistanceSq(par1, par3, par5);
+
+        if (var12 < (double)(var11 * var11))
         {
-            this.mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
+            if (par10 && var12 > 100.0D)
+            {
+                double var14 = Math.sqrt(var12) / 40.0D;
+                this.mc.sndManager.func_92070_a(par7Str, (float)par1, (float)par3, (float)par5, par8, par9, (int)Math.round(var14 * 20.0D));
+            }
+            else
+            {
+                this.mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
+            }
         }
+    }
+
+    public void func_92088_a(double par1, double par3, double par5, double par7, double par9, double par11, NBTTagCompound par13NBTTagCompound)
+    {
+        this.mc.effectRenderer.addEffect(new EntityFireworkStarterFX(this, par1, par3, par5, par7, par9, par11, this.mc.effectRenderer, par13NBTTagCompound));
     }
 
     static Set getEntityList(WorldClient par0WorldClient)

@@ -255,9 +255,20 @@ public final class ItemStack
         {
             if (par1 > 0 && par2EntityLiving instanceof EntityPlayer)
             {
-                int var3 = EnchantmentHelper.getUnbreakingModifier(par2EntityLiving);
+                int var3 = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, this);
+                int var4 = 0;
 
-                if (var3 > 0 && par2EntityLiving.worldObj.rand.nextInt(var3 + 1) > 0)
+                for (int var5 = 0; var3 > 0 && var5 < par1; ++var5)
+                {
+                    if (EnchantmentDurability.func_92097_a(this, var3, par2EntityLiving.worldObj.rand))
+                    {
+                        ++var4;
+                    }
+                }
+
+                par1 -= var4;
+
+                if (par1 <= 0)
                 {
                     return;
                 }

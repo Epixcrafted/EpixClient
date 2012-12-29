@@ -64,7 +64,7 @@ public class EnchantmentHelper
     public static Map getEnchantments(ItemStack par0ItemStack)
     {
         LinkedHashMap var1 = new LinkedHashMap();
-        NBTTagList var2 = par0ItemStack.getEnchantmentTagList();
+        NBTTagList var2 = par0ItemStack.itemID == Item.field_92105_bW.shiftedIndex ? Item.field_92105_bW.func_92110_g(par0ItemStack) : par0ItemStack.getEnchantmentTagList();
 
         if (var2 != null)
         {
@@ -94,11 +94,19 @@ public class EnchantmentHelper
             var5.setShort("id", (short)var4);
             var5.setShort("lvl", (short)((Integer)par0Map.get(Integer.valueOf(var4))).intValue());
             var2.appendTag(var5);
+
+            if (par1ItemStack.itemID == Item.field_92105_bW.shiftedIndex)
+            {
+                Item.field_92105_bW.func_92115_a(par1ItemStack, new EnchantmentData(var4, ((Integer)par0Map.get(Integer.valueOf(var4))).intValue()));
+            }
         }
 
         if (var2.tagCount() > 0)
         {
-            par1ItemStack.setTagInfo("ench", var2);
+            if (par1ItemStack.itemID != Item.field_92105_bW.shiftedIndex)
+            {
+                par1ItemStack.setTagInfo("ench", var2);
+            }
         }
         else if (par1ItemStack.hasTagCompound())
         {
@@ -109,24 +117,31 @@ public class EnchantmentHelper
     /**
      * Returns the biggest level of the enchantment on the array of ItemStack passed.
      */
-    private static int getMaxEnchantmentLevel(int par0, ItemStack[] par1ArrayOfItemStack)
+    public static int getMaxEnchantmentLevel(int par0, ItemStack[] par1ArrayOfItemStack)
     {
-        int var2 = 0;
-        ItemStack[] var3 = par1ArrayOfItemStack;
-        int var4 = par1ArrayOfItemStack.length;
-
-        for (int var5 = 0; var5 < var4; ++var5)
+        if (par1ArrayOfItemStack == null)
         {
-            ItemStack var6 = var3[var5];
-            int var7 = getEnchantmentLevel(par0, var6);
-
-            if (var7 > var2)
-            {
-                var2 = var7;
-            }
+            return 0;
         }
+        else
+        {
+            int var2 = 0;
+            ItemStack[] var3 = par1ArrayOfItemStack;
+            int var4 = par1ArrayOfItemStack.length;
 
-        return var2;
+            for (int var5 = 0; var5 < var4; ++var5)
+            {
+                ItemStack var6 = var3[var5];
+                int var7 = getEnchantmentLevel(par0, var6);
+
+                if (var7 > var2)
+                {
+                    var2 = var7;
+                }
+            }
+
+            return var2;
+        }
     }
 
     /**
@@ -227,14 +242,6 @@ public class EnchantmentHelper
     }
 
     /**
-     * Returns the unbreaking enchantment modifier on current equipped item of player.
-     */
-    public static int getUnbreakingModifier(EntityLiving par0EntityLiving)
-    {
-        return getEnchantmentLevel(Enchantment.unbreaking.effectId, par0EntityLiving.getHeldItem());
-    }
-
-    /**
      * Returns the silk touch status of enchantments on current equipped item of player.
      */
     public static boolean getSilkTouchModifier(EntityLiving par0EntityLiving)
@@ -264,6 +271,29 @@ public class EnchantmentHelper
     public static boolean getAquaAffinityModifier(EntityLiving par0EntityLiving)
     {
         return getMaxEnchantmentLevel(Enchantment.aquaAffinity.effectId, par0EntityLiving.getLastActiveItems()) > 0;
+    }
+
+    public static int func_92098_i(EntityLiving par0EntityLiving)
+    {
+        return getMaxEnchantmentLevel(Enchantment.field_92091_k.effectId, par0EntityLiving.getLastActiveItems());
+    }
+
+    public static ItemStack func_92099_a(Enchantment par0Enchantment, EntityLiving par1EntityLiving)
+    {
+        ItemStack[] var2 = par1EntityLiving.getLastActiveItems();
+        int var3 = var2.length;
+
+        for (int var4 = 0; var4 < var3; ++var4)
+        {
+            ItemStack var5 = var2[var4];
+
+            if (var5 != null && getEnchantmentLevel(par0Enchantment.effectId, var5) > 0)
+            {
+                return var5;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -297,15 +327,29 @@ public class EnchantmentHelper
     public static ItemStack addRandomEnchantment(Random par0Random, ItemStack par1ItemStack, int par2)
     {
         List var3 = buildEnchantmentList(par0Random, par1ItemStack, par2);
+        boolean var4 = par1ItemStack.itemID == Item.book.shiftedIndex;
+
+        if (var4)
+        {
+            par1ItemStack.itemID = Item.field_92105_bW.shiftedIndex;
+        }
 
         if (var3 != null)
         {
-            Iterator var4 = var3.iterator();
+            Iterator var5 = var3.iterator();
 
-            while (var4.hasNext())
+            while (var5.hasNext())
             {
-                EnchantmentData var5 = (EnchantmentData)var4.next();
-                par1ItemStack.addEnchantment(var5.enchantmentobj, var5.enchantmentLevel);
+                EnchantmentData var6 = (EnchantmentData)var5.next();
+
+                if (var4)
+                {
+                    Item.field_92105_bW.func_92115_a(par1ItemStack, var6);
+                }
+                else
+                {
+                    par1ItemStack.addEnchantment(var6.enchantmentobj, var6.enchantmentLevel);
+                }
             }
         }
 
@@ -404,25 +448,26 @@ public class EnchantmentHelper
     {
         Item var2 = par1ItemStack.getItem();
         HashMap var3 = null;
-        Enchantment[] var4 = Enchantment.enchantmentsList;
-        int var5 = var4.length;
+        boolean var4 = par1ItemStack.itemID == Item.book.shiftedIndex;
+        Enchantment[] var5 = Enchantment.enchantmentsList;
+        int var6 = var5.length;
 
-        for (int var6 = 0; var6 < var5; ++var6)
+        for (int var7 = 0; var7 < var6; ++var7)
         {
-            Enchantment var7 = var4[var6];
+            Enchantment var8 = var5[var7];
 
-            if (var7 != null && var7.type.canEnchantItem(var2))
+            if (var8 != null && (var8.type.canEnchantItem(var2) || var4))
             {
-                for (int var8 = var7.getMinLevel(); var8 <= var7.getMaxLevel(); ++var8)
+                for (int var9 = var8.getMinLevel(); var9 <= var8.getMaxLevel(); ++var9)
                 {
-                    if (par0 >= var7.getMinEnchantability(var8) && par0 <= var7.getMaxEnchantability(var8))
+                    if (par0 >= var8.getMinEnchantability(var9) && par0 <= var8.getMaxEnchantability(var9))
                     {
                         if (var3 == null)
                         {
                             var3 = new HashMap();
                         }
 
-                        var3.put(Integer.valueOf(var7.effectId), new EnchantmentData(var7, var8));
+                        var3.put(Integer.valueOf(var8.effectId), new EnchantmentData(var8, var9));
                     }
                 }
             }

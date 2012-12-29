@@ -108,10 +108,10 @@ public class EntityAIControlledByPlayer extends EntityAIBase
             }
         }
 
-        float var21 = 0.16277136F / (var8 * var8 * var8);
+        float var22 = 0.16277136F / (var8 * var8 * var8);
         float var10 = MathHelper.sin(var2.rotationYaw * (float)Math.PI / 180.0F);
         float var11 = MathHelper.cos(var2.rotationYaw * (float)Math.PI / 180.0F);
-        float var12 = var2.getAIMoveSpeed() * var21;
+        float var12 = var2.getAIMoveSpeed() * var22;
         float var13 = Math.max(var7, 1.0F);
         var13 = var12 / var13;
         float var14 = var7 * var13;
@@ -166,7 +166,9 @@ public class EntityAIControlledByPlayer extends EntityAIBase
 
                 if (var20.stackSize == 0)
                 {
-                    var1.inventory.mainInventory[var1.inventory.currentItem] = new ItemStack(Item.fishingRod);
+                    ItemStack var21 = new ItemStack(Item.fishingRod);
+                    var21.setTagCompound(var20.stackTagCompound);
+                    var1.inventory.mainInventory[var1.inventory.currentItem] = var21;
                 }
             }
         }

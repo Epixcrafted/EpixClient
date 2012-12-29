@@ -236,7 +236,7 @@ public abstract class Container
                         }
                         else if (var7.isItemValid(var13))
                         {
-                            if (var8.itemID == var13.itemID && (!var8.getHasSubtypes() || var8.getItemDamage() == var13.getItemDamage()) && ItemStack.areItemStackTagsEqual(var8, var13))
+                            if (var8.itemID == var13.itemID && var8.getItemDamage() == var13.getItemDamage() && ItemStack.areItemStackTagsEqual(var8, var13))
                             {
                                 var10 = par2 == 0 ? var13.stackSize : 1;
 
@@ -314,12 +314,14 @@ public abstract class Container
                         if (var10 > -1)
                         {
                             var6.addItemStackToInventory(var8);
+                            var7.decrStackSize(var11.stackSize);
                             var7.putStack((ItemStack)null);
                             var7.onPickupFromSlot(par4EntityPlayer, var11);
                         }
                     }
                     else
                     {
+                        var7.decrStackSize(var11.stackSize);
                         var7.putStack(var8);
                         var7.onPickupFromSlot(par4EntityPlayer, var11);
                     }

@@ -29,12 +29,14 @@ public class EntityArrow extends Entity implements IProjectile
     public EntityArrow(World par1World)
     {
         super(par1World);
+        this.renderDistanceWeight = 10.0D;
         this.setSize(0.5F, 0.5F);
     }
 
     public EntityArrow(World par1World, double par2, double par4, double par6)
     {
         super(par1World);
+        this.renderDistanceWeight = 10.0D;
         this.setSize(0.5F, 0.5F);
         this.setPosition(par2, par4, par6);
         this.yOffset = 0.0F;
@@ -43,6 +45,7 @@ public class EntityArrow extends Entity implements IProjectile
     public EntityArrow(World par1World, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving, float par4, float par5)
     {
         super(par1World);
+        this.renderDistanceWeight = 10.0D;
         this.shootingEntity = par2EntityLiving;
 
         if (par2EntityLiving instanceof EntityPlayer)
@@ -72,6 +75,7 @@ public class EntityArrow extends Entity implements IProjectile
     public EntityArrow(World par1World, EntityLiving par2EntityLiving, float par3)
     {
         super(par1World);
+        this.renderDistanceWeight = 10.0D;
         this.shootingEntity = par2EntityLiving;
 
         if (par2EntityLiving instanceof EntityPlayer)
@@ -257,6 +261,7 @@ public class EntityArrow extends Entity implements IProjectile
             }
 
             float var20;
+            float var26;
 
             if (var4 != null)
             {
@@ -281,7 +286,7 @@ public class EntityArrow extends Entity implements IProjectile
                         var21 = DamageSource.causeArrowDamage(this, this.shootingEntity);
                     }
 
-                    if (this.isBurning())
+                    if (this.isBurning() && !(var4.entityHit instanceof EntityEnderman))
                     {
                         var4.entityHit.setFire(5);
                     }
@@ -290,25 +295,40 @@ public class EntityArrow extends Entity implements IProjectile
                     {
                         if (var4.entityHit instanceof EntityLiving)
                         {
+                            EntityLiving var24 = (EntityLiving)var4.entityHit;
+
                             if (!this.worldObj.isRemote)
                             {
-                                EntityLiving var24 = (EntityLiving)var4.entityHit;
                                 var24.setArrowCountInEntity(var24.getArrowCountInEntity() + 1);
                             }
 
                             if (this.knockbackStrength > 0)
                             {
-                                float var25 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                                var26 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
-                                if (var25 > 0.0F)
+                                if (var26 > 0.0F)
                                 {
-                                    var4.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6000000238418579D / (double)var25, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6000000238418579D / (double)var25);
+                                    var4.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26);
                                 }
+                            }
+
+                            if (this.shootingEntity != null)
+                            {
+                                EnchantmentThorns.func_92096_a(this.shootingEntity, var24, this.rand);
+                            }
+
+                            if (this.shootingEntity != null && var4.entityHit != this.shootingEntity && var4.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)
+                            {
+                                ((EntityPlayerMP)this.shootingEntity).playerNetServerHandler.sendPacketToPlayer(new Packet70GameEvent(6, 0));
                             }
                         }
 
                         this.func_85030_a("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-                        this.setDead();
+
+                        if (!(var4.entityHit instanceof EntityEnderman))
+                        {
+                            this.setDead();
+                        }
                     }
                     else
                     {
@@ -387,10 +407,10 @@ public class EntityArrow extends Entity implements IProjectile
 
             if (this.isInWater())
             {
-                for (int var26 = 0; var26 < 4; ++var26)
+                for (int var25 = 0; var25 < 4; ++var25)
                 {
-                    float var27 = 0.25F;
-                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var27, this.posY - this.motionY * (double)var27, this.posZ - this.motionZ * (double)var27, this.motionX, this.motionY, this.motionZ);
+                    var26 = 0.25F;
+                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var26, this.posY - this.motionY * (double)var26, this.posZ - this.motionZ * (double)var26, this.motionX, this.motionY, this.motionZ);
                 }
 
                 var22 = 0.8F;

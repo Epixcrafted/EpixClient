@@ -72,6 +72,11 @@ public class DamageSource
         return (new EntityDamageSourceIndirect("indirectMagic", par0Entity, par1Entity)).setDamageBypassesArmor().setMagicDamage();
     }
 
+    public static DamageSource func_92087_a(Entity par0Entity)
+    {
+        return (new EntityDamageSource("thorns", par0Entity)).setMagicDamage();
+    }
+
     /**
      * Returns true if the damage is projectile based.
      */

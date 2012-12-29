@@ -68,7 +68,7 @@ public class ComponentStrongholdChestCorridor extends ComponentStronghold
                 if (par3StructureBoundingBox.isVecInside(var5, var4, var6))
                 {
                     this.hasMadeChest = true;
-                    this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 3, 2, 3, strongholdChestContents, 2 + par2Random.nextInt(2));
+                    this.generateStructureChestContents(par1World, par3StructureBoundingBox, par2Random, 3, 2, 3, WeightedRandomChestContent.func_92080_a(strongholdChestContents, new WeightedRandomChestContent[] {Item.field_92105_bW.func_92114_b(par2Random)}), 2 + par2Random.nextInt(2));
                 }
             }
 

@@ -31,4 +31,9 @@ public class EnchantmentDigging extends Enchantment
     {
         return 5;
     }
+
+    public boolean func_92089_a(ItemStack par1ItemStack)
+    {
+        return par1ItemStack.getItem().shiftedIndex == Item.shears.shiftedIndex ? true : super.func_92089_a(par1ItemStack);
+    }
 }

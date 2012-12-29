@@ -5,8 +5,8 @@ public class EntityFX extends Entity
     private int particleTextureIndex;
     protected float particleTextureJitterX;
     protected float particleTextureJitterY;
-    protected int particleAge = 0;
-    protected int particleMaxAge = 0;
+    protected int particleAge;
+    protected int particleMaxAge;
     protected float particleScale;
     protected float particleGravity;
 
@@ -24,14 +24,17 @@ public class EntityFX extends Entity
     protected float particleBlue;
 
     /** Particle alpha */
-    protected float particleAlpha = 1.0F;
+    protected float particleAlpha;
     public static double interpPosX;
     public static double interpPosY;
     public static double interpPosZ;
 
-    public EntityFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+    protected EntityFX(World par1World, double par2, double par4, double par6)
     {
         super(par1World);
+        this.particleAge = 0;
+        this.particleMaxAge = 0;
+        this.particleAlpha = 1.0F;
         this.setSize(0.2F, 0.2F);
         this.yOffset = this.height / 2.0F;
         this.setPosition(par2, par4, par6);
@@ -39,6 +42,16 @@ public class EntityFX extends Entity
         this.lastTickPosY = par4;
         this.lastTickPosZ = par6;
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
+        this.particleTextureJitterX = this.rand.nextFloat() * 3.0F;
+        this.particleTextureJitterY = this.rand.nextFloat() * 3.0F;
+        this.particleScale = (this.rand.nextFloat() * 0.5F + 0.5F) * 2.0F;
+        this.particleMaxAge = (int)(4.0F / (this.rand.nextFloat() * 0.9F + 0.1F));
+        this.particleAge = 0;
+    }
+
+    public EntityFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+    {
+        this(par1World, par2, par4, par6);
         this.motionX = par8 + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.4F);
         this.motionY = par10 + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.4F);
         this.motionZ = par12 + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.4F);
@@ -47,11 +60,6 @@ public class EntityFX extends Entity
         this.motionX = this.motionX / (double)var15 * (double)var14 * 0.4000000059604645D;
         this.motionY = this.motionY / (double)var15 * (double)var14 * 0.4000000059604645D + 0.10000000149011612D;
         this.motionZ = this.motionZ / (double)var15 * (double)var14 * 0.4000000059604645D;
-        this.particleTextureJitterX = this.rand.nextFloat() * 3.0F;
-        this.particleTextureJitterY = this.rand.nextFloat() * 3.0F;
-        this.particleScale = (this.rand.nextFloat() * 0.5F + 0.5F) * 2.0F;
-        this.particleMaxAge = (int)(4.0F / (this.rand.nextFloat() * 0.9F + 0.1F));
-        this.particleAge = 0;
     }
 
     public EntityFX multiplyVelocity(float par1)

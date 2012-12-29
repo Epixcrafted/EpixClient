@@ -5,7 +5,7 @@ public class GuiYesNo extends GuiScreen
     /**
      * A reference to the screen object that created this. Used for navigating between screens.
      */
-    private GuiScreen parentScreen;
+    protected GuiScreen parentScreen;
 
     /** First line of text. */
     private String message1;
@@ -20,7 +20,7 @@ public class GuiYesNo extends GuiScreen
     protected String buttonText2;
 
     /** World number to be deleted. */
-    private int worldNumber;
+    protected int worldNumber;
 
     public GuiYesNo(GuiScreen par1GuiScreen, String par2Str, String par3Str, int par4)
     {

@@ -6,7 +6,7 @@ import java.util.Random;
 public class BlockStep extends BlockHalfSlab
 {
     /** The list of the types of step blocks. */
-    public static final String[] blockStepTypes = new String[] {"stone", "sand", "wood", "cobble", "brick", "smoothStoneBrick"};
+    public static final String[] blockStepTypes = new String[] {"stone", "sand", "wood", "cobble", "brick", "smoothStoneBrick", "netherBrick"};
 
     public BlockStep(int par1, boolean par2)
     {
@@ -20,7 +20,7 @@ public class BlockStep extends BlockHalfSlab
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         int var3 = par2 & 7;
-        return var3 == 0 ? (par1 <= 1 ? 6 : 5) : (var3 == 1 ? (par1 == 0 ? 208 : (par1 == 1 ? 176 : 192)) : (var3 == 2 ? 4 : (var3 == 3 ? 16 : (var3 == 4 ? Block.brick.blockIndexInTexture : (var3 == 5 ? Block.stoneBrick.blockIndexInTexture : 6)))));
+        return var3 == 0 ? (par1 <= 1 ? 6 : 5) : (var3 == 1 ? (par1 == 0 ? 208 : (par1 == 1 ? 176 : 192)) : (var3 == 2 ? 4 : (var3 == 3 ? 16 : (var3 == 4 ? Block.brick.blockIndexInTexture : (var3 == 5 ? Block.stoneBrick.blockIndexInTexture : (var3 == 6 ? Block.netherBrick.blockIndexInTexture : 6))))));
     }
 
     /**
@@ -68,7 +68,7 @@ public class BlockStep extends BlockHalfSlab
     {
         if (par1 != Block.stoneDoubleSlab.blockID)
         {
-            for (int var4 = 0; var4 < 6; ++var4)
+            for (int var4 = 0; var4 < 7; ++var4)
             {
                 if (var4 != 2)
                 {

@@ -726,7 +726,7 @@ public class EntityRenderer
                 float var5 = var2.provider.lightBrightnessTable[var3 / 16] * var4;
                 float var6 = var2.provider.lightBrightnessTable[var3 % 16] * (this.torchFlickerX * 0.1F + 1.5F);
 
-                if (var2.lightningFlash > 0)
+                if (var2.lastLightningBolt > 0)
                 {
                     var5 = var2.provider.lightBrightnessTable[var3 / 16];
                 }
@@ -1305,11 +1305,11 @@ public class EntityRenderer
 
                 if (var10 > var2.posY + 1.0D && var3.getPrecipitationHeight(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posZ)) > MathHelper.floor_double(var2.posY))
                 {
-                    this.mc.theWorld.playSound(var8, var10, var12, "ambient.weather.rain", 0.1F, 0.5F);
+                    this.mc.theWorld.playSound(var8, var10, var12, "ambient.weather.rain", 0.1F, 0.5F, false);
                 }
                 else
                 {
-                    this.mc.theWorld.playSound(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F);
+                    this.mc.theWorld.playSound(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F, false);
                 }
             }
         }

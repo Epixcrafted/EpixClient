@@ -91,7 +91,7 @@ public abstract class BlockHalfSlab extends Block
 
     public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        return this.isDoubleSlab ? 0 : (par5 != 0 && (par5 == 1 || (double)par7 <= 0.5D) ? par9 : par9 | 8);
+        return this.isDoubleSlab ? par9 : (par5 != 0 && (par5 == 1 || (double)par7 <= 0.5D) ? par9 : par9 | 8);
     }
 
     /**
@@ -154,4 +154,20 @@ public abstract class BlockHalfSlab extends Block
      * Returns the slab block name with step type.
      */
     public abstract String getFullSlabName(int var1);
+
+    /**
+     * Get the block's damage value (for use with pick block).
+     */
+    public int getDamageValue(World par1World, int par2, int par3, int par4)
+    {
+        return super.getDamageValue(par1World, par2, par3, par4) & 7;
+    }
+
+    /**
+     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
+     */
+    public int idPicked(World par1World, int par2, int par3, int par4)
+    {
+        return isBlockSingleSlab(this.blockID) ? this.blockID : (this.blockID == Block.stoneDoubleSlab.blockID ? Block.stoneSingleSlab.blockID : (this.blockID == Block.woodDoubleSlab.blockID ? Block.woodSingleSlab.blockID : Block.stoneSingleSlab.blockID));
+    }
 }

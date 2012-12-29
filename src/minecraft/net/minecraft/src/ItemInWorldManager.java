@@ -330,24 +330,30 @@ public class ItemInWorldManager
      */
     public boolean activateBlockOrUseItem(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        int var11 = par2World.getBlockId(par4, par5, par6);
+        int var11;
 
-        if (var11 > 0 && Block.blocksList[var11].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, par8, par9, par10))
+        if (!par1EntityPlayer.isSneaking() || par1EntityPlayer.getHeldItem() == null)
         {
-            return true;
+            var11 = par2World.getBlockId(par4, par5, par6);
+
+            if (var11 > 0 && Block.blocksList[var11].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, par8, par9, par10))
+            {
+                return true;
+            }
         }
-        else if (par3ItemStack == null)
+
+        if (par3ItemStack == null)
         {
             return false;
         }
         else if (this.isCreative())
         {
-            int var12 = par3ItemStack.getItemDamage();
-            int var13 = par3ItemStack.stackSize;
-            boolean var14 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, par8, par9, par10);
-            par3ItemStack.setItemDamage(var12);
-            par3ItemStack.stackSize = var13;
-            return var14;
+            var11 = par3ItemStack.getItemDamage();
+            int var12 = par3ItemStack.stackSize;
+            boolean var13 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, par8, par9, par10);
+            par3ItemStack.setItemDamage(var11);
+            par3ItemStack.stackSize = var12;
+            return var13;
         }
         else
         {
